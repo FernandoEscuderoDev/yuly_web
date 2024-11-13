@@ -1,0 +1,53 @@
+---
+import type { SanityDocument } from "@sanity/client";
+import Layout from "./../../layouts/Layout.astro";
+import { loadQuery } from "./../../sanity/lib/load-query"; // Importa la función loadQuery
+import { urlForImage } from "./../../sanity/lib/urlForImage"; // Asegúrate de importar urlForImage
+
+// Consulta para obtener los posts
+const POSTS_QUERY = `*[
+  _type == "post"
+  && defined(slug.current)
+]|order(publishedAt desc)[0...12]{
+  _id,
+  title,
+  slug,
+  publishedAt,
+  body,
+  mainImage
+}`;
+
+const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // Asegúrate de incluir params
+---
+
+<Layout title="Posts">
+  <main class="container mx-auto min-h-screen max-w-3xl p-8">
+    <h1 class="text-4xl font-bold mb-8">Posts</h1>
+    <ul class="flex flex-col gap-y-4">
+      {
+        posts.map((post) => (
+          <li class="hover:underline">
+            <a href={`/posts/${post.slug.current}`}>
+              {post.mainImage && (
+                <img
+                  src={urlForImage(post.mainImage.asset).url()}
+                  alt={post.mainImage.alt}
+                  class="w-36 h-36"
+                />
+              )}
+              <h2 class="text-xl font-semibold">{post.title}</h2>
+              <p class="text-gray-500">
+                {new Date(post.publishedAt).toLocaleDateString()}
+              </p>
+              <p>
+                {post.body.length > 0
+                  ? post.body[0].children[0].text
+                  : "Sin contenido disponible."}
+              </p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

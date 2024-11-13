@@ -1,0 +1,14 @@
+---
+let links = {nombre: ['home','post', 'contact', 'about'], href: ['/','/', '/', '/']}
+const {classes} = Astro.props
+---
+
+{
+  links.nombre.map((link, index) => (
+    <li class="flex">
+      <a class=`capitalize ${classes}` href={links.href[index] + ((link === 'home')? "": link)}>
+        {link}
+      </a>
+    </li>
+  ))
+}

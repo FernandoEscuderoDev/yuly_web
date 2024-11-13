@@ -1,0 +1,32 @@
+---
+export const prerender = false;
+import { loadQuery } from "./../sanity/lib/load-query";
+import PortableTextImage from "./PortableTextImage.astro";
+
+const { data: posts } = await loadQuery({
+  query: `*[_type == "post" && defined(slug.current)]{title, publishedAt, mainImage, 'alt' : mainImage.alt, 'currentSlug' : slug.current}`,
+  params: {},
+});
+---
+
+{
+  posts.map((post) => (
+    <li class="hover:underline relative w-full h-full mb-2 group hover:z-10 rounded-lg">
+      <div class="relative break-inside-avoid">
+        <PortableTextImage
+          classImg="object-contain relative max-w-full rounded-lg transform group-hover:scale-105 group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] group-hover:shadow-fuchsia-500 transition-all duration-300"
+          asset={post.mainImage}
+          alt={post.alt || "Imagen del post"}
+        />
+
+        <a
+          class="absolute inset-0 transition-all rounded-lg duration-300 text-fuchsia-300 group-hover:scale-105 bg-fuchsia-950/70 flex flex-col justify-end items-start hover:text-fuchsia-50 hover:bg-fuchsia-950/0 p-4"
+          href={`/post/${post.currentSlug || ''}`}
+        >
+          <h2 class="text-xl font-semibold">{post.title}</h2>
+          <p>{new Date(post.publishedAt).toLocaleDateString()}</p>
+        </a>
+      </div>
+    </li>
+  ))
+}

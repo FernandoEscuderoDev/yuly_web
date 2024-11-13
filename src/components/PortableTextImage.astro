@@ -1,0 +1,11 @@
+---
+import { urlForImage } from "./../sanity/lib/urlForImage";
+
+const { asset, alt, classImg } = Astro.props; // Asegúrate de que 'node' tenga 'asset' y 'alt'
+
+---
+
+<picture>
+  <source srcset={urlForImage(asset).format("webp").url()} type="image/webp" />
+  <img class={classImg} src={urlForImage(asset).format("webp").url()} alt={alt} />
+</picture>

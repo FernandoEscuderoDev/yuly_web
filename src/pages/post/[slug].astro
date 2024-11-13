@@ -1,0 +1,51 @@
+---
+export const prerender = true;
+import { loadQuery } from "./../../sanity/lib/load-query";
+import PortableText from "./../../components/PortableText.astro";
+import Layout from "./../../layouts/Layout.astro";
+import { urlForImage } from "./../../sanity/lib/urlForImage";
+
+export async function getStaticPaths() {
+  const { data: posts } = await loadQuery({
+    query: `*[_type == "post"]{slug}`,
+    params: {},
+  });
+
+  return posts.map(({ slug }) => {
+    return {
+      params: {
+        slug: slug.current,
+      },
+    };
+  });
+}
+
+const { params } = Astro;
+
+const { data: post } = await loadQuery({
+  query: `*[_type == "post" && slug.current == $slug][0]{title, body, mainImage}`,
+  params, // Aseguramos que se pase params al objeto
+});
+---
+
+<Layout title={post.title}>
+  <main
+    class="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4"
+  >
+    <a href="/post" class="hover:underline">&larr; Back to posts</a>
+    <h1 class="text-4xl font-bold mb-8">{post.title}</h1>
+    {post.mainImage && (
+      <img
+        src={urlForImage(post.mainImage.asset).url()}
+        alt={post.mainImage.alt}
+        class="responsive__img"
+      />
+    )}
+    <div class="prose">
+      <p>
+        Published: {new Date(post.publishedAt).toLocaleDateString()}
+      </p>
+      <PortableText portableText={post.body} />
+    </div>
+  </main>
+</Layout>
