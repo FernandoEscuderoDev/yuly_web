@@ -18,6 +18,7 @@ export default defineConfig({
     react(),
     tailwind(),
     icon(),
+    netlify()
   ],
   output: "server",
   adapter: netlify(),
