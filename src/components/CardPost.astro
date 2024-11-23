@@ -4,28 +4,36 @@ import { loadQuery } from "./../sanity/lib/load-query";
 import PortableTextImage from "./PortableTextImage.astro";
 
 const { data: posts } = await loadQuery({
-  query: `*[_type == "post" && defined(slug.current)]{title, publishedAt, "mainImage": mainImage.asset->url, 'alt' : mainImage.alt, 'currentSlug' : slug.current}`,
+  query: `*[_type == "post" && defined(slug.current)]{title, publishedAt, "mainImage": mainImage.asset->url,
+  "imageWidth": mainImage.asset->metadata.dimensions.width,
+  "imageHeight": mainImage.asset->metadata.dimensions.height, 'alt' : mainImage.alt, 'currentSlug' : slug.current}`,
   params: {},
 });
 ---
 
 {
   posts.map((post) => (
-    <li class="hover:underline relative w-full h-full mb-2 group hover:z-10 rounded-lg">
+    <li class="hover:underline relative h-full mx-auto max-w-[500px] mb-2 group hover:z-10 rounded-lg">
       <div class="relative break-inside-avoid">
-        <PortableTextImage
-          classImg="object-cover aspect-square relative max-w-full rounded-lg transform group-hover:scale-105 group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] group-hover:shadow-fuchsia-500 transition-all duration-300"
-          asset={post.mainImage}
-          alt={post.alt || "Imagen sin texto Alternativo"}
-        />
-
         <a
-          class="absolute inset-0 transition-all rounded-lg duration-300 text-fuchsia-300 group-hover:scale-105 bg-fuchsia-950/70 flex flex-col justify-end items-start hover:text-fuchsia-50 hover:bg-fuchsia-950/0 p-4"
-          href={`/post/${post.currentSlug || ''}`}
+          href={post.mainImage}
+          data-cropped="true"
+          data-pswp-width={post.imageWidth}
+          data-pswp-height={post.imageHeight}
+          data-pswp-src={post.mainImage}
         >
-          <h2 class="text-xl font-semibold">{post.title}</h2>
-          <p>{new Date(post.publishedAt).toLocaleDateString()}</p>
+          <PortableTextImage
+            classImg="max-w-full object-center rounded-lg transform group-hover:scale-105 group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] group-hover:shadow-fuchsia-500 transition-all duration-300"
+            asset={post.mainImage}
+            alt={post.alt || "Imagen sin texto Alternativo"}
+          />
         </a>
+
+        <div class="cursor-pointer absolute inset-0 transition-all rounded-lg duration-300 text-fuchsia-300 group-hover:scale-105 bg-fuchsia-950/70 flex flex-col justify-end items-start hover:text-fuchsia-50 hover:bg-fuchsia-950/0">
+          <div class="group-hover:bg-fuchsia-950/50 w-full p-4 rounded-b-lg transition-all">
+            <h2 class="text-xl font-semibold capitalize">{post.title}</h2>
+          </div>
+        </div>
       </div>
     </li>
   ))

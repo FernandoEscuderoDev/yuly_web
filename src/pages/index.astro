@@ -1,9 +1,27 @@
 ---
-import CardIndex from '../components/CardIndex.astro';
-import Layout from '../layouts/Layout.astro';
+import CardPost from "../components/CardPost.astro";
+import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Welcome to Astro." />
-<main class="mx-auto p-2">
-  <CardIndex/>
+<Layout/>
+<main class="mx-auto">
+  <ul
+    class="my-5 mx-auto columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-2 px-5"
+    id="my-gallery"
+  >
+    <CardPost />
+  </ul>
 </main>
+
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/style.css";
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: "#my-gallery div",
+    showHideAnimationType: "zoom",
+    closeOnVerticalDrag: true,
+    pswpModule: () => import("photoswipe"),
+  });
+  lightbox.init();
+</script>
