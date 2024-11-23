@@ -1,4 +1,5 @@
 ---
+import PortableTextImage from "../../components/PortableTextImage.astro";
 import Layout from "./../../layouts/Layout.astro";
 import { loadQuery } from "./../../sanity/lib/load-query"; // Importa la función loadQuery
 import { urlForImage } from "./../../sanity/lib/urlForImage"; // Asegúrate de importar urlForImage
@@ -13,7 +14,8 @@ const POSTS_QUERY = `*[
   slug,
   publishedAt,
   "bodyText": body[].children[].text,
-  mainImage
+  "mainImage": mainImage.asset->url,
+  'alt' : mainImage.alt
 }`;
 
 const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // Asegúrate de incluir params
@@ -27,13 +29,13 @@ const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // 
         posts.map((post) => (
           <li class="hover:underline capitalize p-5 md:mx-2 md:max-w-2xl">
             <a href={`/post/${post.slug.current}`} class="">
-              <img
-                src={urlForImage(post.mainImage).quality(10).format("webp").url()}
-                alt={post.mainImage.alt}
-                class="rounded-xl object-cover aspect-square"
+              <PortableTextImage
+                asset={post.mainImage}
+                alt={post.alt || "Imagen sin texto Alternativo"}
+                classImg="rounded-xl object-cover aspect-square"
               />
               <div class="my-2">
-                <time class="text-gray-500 hover:no-underline">
+                <time class="text-gray-300 hover:no-underline">
                   {new Date(post.publishedAt).toLocaleDateString()}
                 </time>
                 <h2 class="text-xl font-semibold">{post.title}</h2>
