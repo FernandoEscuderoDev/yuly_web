@@ -17,7 +17,11 @@ const { data: posts } = await loadQuery({
     <li class="hover:underline relative h-full mx-auto max-w-[500px] mb-2 group hover:z-10 rounded-lg">
       <div class="relative break-inside-avoid">
         <a
-          href={urlForImage(post.mainImage).format("webp").url()}
+          href={urlForImage(post.mainImage)
+            .width(1920)
+            .height(Math.round((1920 * post.imageHeight) / post.imageWidth))
+            .format("webp")
+            .url()}
           data-pswp-width={post.imageWidth}
           data-pswp-height={post.imageHeight}
         >
@@ -25,6 +29,8 @@ const { data: posts } = await loadQuery({
             classImg="max-w-full object-center rounded-lg transform group-hover:scale-105 group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] group-hover:shadow-fuchsia-500 transition-all duration-300"
             asset={post.mainImage}
             alt={post.alt || "Imagen sin texto Alternativo"}
+            imageHeight={post.imageHeight}
+            imageWidth={post.imageWidth}
           />
         </a>
 

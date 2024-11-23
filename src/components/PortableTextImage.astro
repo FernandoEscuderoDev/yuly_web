@@ -6,12 +6,19 @@ const {
   asset = "",
   alt = "Imagen sin texto Alternativo",
   classImg = "",
+  imageHeight,
+  imageWidth
 } = Astro.props;
 ---
 
 <Picture
   class={classImg}
-  src={urlForImage(asset).quality(50).format("webp").url()}
+  src={urlForImage(asset)
+    .width(1920)
+    .height(Math.round((1920 * imageHeight) / imageWidth))
+    .quality(50)
+    .format("webp")
+    .url()}
   width={500}
   height={500}
   alt={alt}
