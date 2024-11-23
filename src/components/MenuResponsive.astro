@@ -8,7 +8,7 @@ import { Icon } from "astro-icon/components";
   class="fixed h-screen w-screen z-10 bg-fuchsia-950 opacity-90 hidden backdrop-blur-md transition-all duration-300 top-0 right-0"
 >
 </div>
-<ul
+<div
   id="side_menu"
   class="flex z-20 top-0 right-0 flex-col gap-2 h-full py-12 px-4 w-72 sm:w-80 md:w-96 fixed translate-x-full transition-all duration-300 bg-fuchsia-900 text-xl"
 >
@@ -19,10 +19,12 @@ import { Icon } from "astro-icon/components";
   >
     <Icon name="close" />
   </button>
-  <Links
-    classes="bg-fuchsia-900 w-full py-2 px-4 rounded-lg hover:bg-fuchsia-800 hover:underline"
-  />
-</ul>
+  <ul>
+    <Links
+      classes="bg-fuchsia-900 w-full py-2 px-4 rounded-lg hover:bg-fuchsia-800 hover:underline"
+    />
+  </ul>
+</div>
 <script>
   import { isSideMenuOpen } from "../store/store.js";
 
