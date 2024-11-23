@@ -21,5 +21,5 @@ export default defineConfig({
     netlify()
   ],
   output: "server",
-  adapter: netlify(),
+  adapter: netlify({assets: false}),
 });
