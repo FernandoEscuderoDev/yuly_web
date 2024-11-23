@@ -23,7 +23,8 @@ export async function getStaticPaths() {
 const { params } = Astro;
 
 const { data: post } = await loadQuery({
-  query: `*[_type == "post" && slug.current == $slug][0]{title, body, mainImage}`,
+  query: `*[_type == "post" && slug.current == $slug][0]{title, body, mainImage,
+  "bodyText": body[].children[].text}`,
   params, // Aseguramos que se pase params al objeto
 });
 ---
@@ -32,20 +33,22 @@ const { data: post } = await loadQuery({
   <main
     class="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4"
   >
-    <a href="/post" class="hover:underline">&larr; Back to posts</a>
+    <a href="/post" class="hover:underline font-bold">&larr; Back to posts</a>
     <h1 class="text-4xl font-bold mb-8">{post.title}</h1>
-    {post.mainImage && (
-      <img
-        src={urlForImage(post.mainImage.asset).url()}
-        alt={post.mainImage.alt}
-        class="responsive__img"
-      />
-    )}
+    {
+      post.mainImage && (
+        <img
+          src={urlForImage(post.mainImage.asset).url()}
+          alt={post.mainImage.alt}
+          class="responsive__img"
+        />
+      )
+    }
     <div class="prose">
       <p>
         Published: {new Date(post.publishedAt).toLocaleDateString()}
       </p>
-      <PortableText portableText={post.body} />
+      <PortableText portableText={post.bodyText} />
     </div>
   </main>
 </Layout>

@@ -13,37 +13,33 @@ const POSTS_QUERY = `*[
   title,
   slug,
   publishedAt,
-  body,
+  "bodyText": body[].children[].text,
   mainImage
 }`;
 
 const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // Asegúrate de incluir params
 ---
 
-<Layout title="Posts">
-  <main class="container mx-auto min-h-screen max-w-3xl p-8">
-    <h1 class="text-4xl font-bold mb-8">Posts</h1>
-    <ul class="flex flex-col gap-y-4">
+<Layout title="Post">
+  <main class="container mx-auto min-h-screen ">
+    <h1 class="text-4xl font-bold py-4 text-center">Post</h1>
+    <ul class="flex flex-row justify-center flex-wrap gap-y-4 w-full ">
       {
         posts.map((post) => (
-          <li class="hover:underline">
-            <a href={`/posts/${post.slug.current}`}>
-              {post.mainImage && (
-                <img
-                  src={urlForImage(post.mainImage.asset).url()}
-                  alt={post.mainImage.alt}
-                  class="w-36 h-36"
-                />
-              )}
-              <h2 class="text-xl font-semibold">{post.title}</h2>
-              <p class="text-gray-500">
-                {new Date(post.publishedAt).toLocaleDateString()}
-              </p>
-              <p>
-                {post.body.length > 0
-                  ? post.body[0].children[0].text
-                  : "Sin contenido disponible."}
-              </p>
+          <li class="hover:underline capitalize p-5 md:mx-2 md:max-w-2xl">
+            <a href={`/post/${post.slug.current}`} class="">
+              <img
+                src={urlForImage(post.mainImage).quality(10).format("webp").url()}
+                alt={post.mainImage.alt}
+                class="rounded-xl object-cover aspect-square"
+              />
+              <div class="my-2">
+                <time class="text-gray-500 hover:no-underline">
+                  {new Date(post.publishedAt).toLocaleDateString()}
+                </time>
+                <h2 class="text-xl font-semibold">{post.title}</h2>
+                <p>{post.bodyText ? post.bodyText : "..."}</p>
+              </div>
             </a>
           </li>
         ))

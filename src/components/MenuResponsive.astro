@@ -1,6 +1,6 @@
 ---
-import Links from './Links.astro'
-import {Icon} from 'astro-icon/components'
+import Links from "./Links.astro";
+import { Icon } from "astro-icon/components";
 ---
 
 <div
@@ -24,28 +24,40 @@ import {Icon} from 'astro-icon/components'
   />
 </ul>
 <script>
-  import {isSideMenuOpen} from '../store/store.js'
-  const sideMenu = document.getElementById('side_menu')
-  const sideMenuBackground = document.getElementById('side_menu_bg')
-  const sideMenuCross = document.getElementById('side_menu_cross')
-
-  const handleCloseSideMenu = () => {
-    isSideMenuOpen.set(false)
-  }
+  import { isSideMenuOpen } from "../store/store.js";
 
   // Escucha los cambios en el store y muestra/oculta el diálogo en consecuencia
   isSideMenuOpen.subscribe((open) => {
-    if (open) {
-      sideMenuBackground.classList.remove('hidden')
-      sideMenu.classList.remove('translate-x-full')
-      sideMenu.classList.add('translate-x-0')
-    } else {
-      sideMenuBackground.classList.add('hidden')
-      sideMenu.classList.remove('translate-x-0')
-      sideMenu.classList.add('translate-x-full')
-    }
-  })
+    const sideMenu = document.getElementById("side_menu");
+    const sideMenuBackground = document.getElementById("side_menu_bg");
 
-  sideMenuCross.addEventListener('click', handleCloseSideMenu)
-  sideMenuBackground.addEventListener('click', handleCloseSideMenu)
+    if (open) {
+      sideMenuBackground.classList.remove("hidden");
+      sideMenu.classList.remove("translate-x-full");
+      sideMenu.classList.add("translate-x-0");
+    } else {
+      sideMenuBackground.classList.add("hidden");
+      sideMenu.classList.remove("translate-x-0");
+      sideMenu.classList.add("translate-x-full");
+    }
+  });
+
+  // Función para cerrar el menú lateral
+  const handleCloseSideMenu = () => {
+    isSideMenuOpen.set(false);
+  };
+
+  // Agregar eventos de cierre
+  document.addEventListener("DOMContentLoaded", () => {
+    const sideMenuCross = document.getElementById("side_menu_cross");
+    const sideMenuBackground = document.getElementById("side_menu_bg");
+
+    sideMenuCross.addEventListener("click", () => {
+      handleCloseSideMenu();
+    });
+
+    sideMenuBackground.addEventListener("click", () => {
+      handleCloseSideMenu();
+    });
+  });
 </script>
