@@ -1,8 +1,0 @@
-[build]
-  publish = "dist"
-  command = "npm run build"
-
-[[plugins]]
-  package = "@netlify/plugin-image-optimizer"
-  [plugins.inputs]
-  disable = true
