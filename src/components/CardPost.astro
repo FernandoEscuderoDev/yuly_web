@@ -1,5 +1,6 @@
 ---
 export const prerender = false;
+import { urlForImage } from "../sanity/lib/urlForImage";
 import { loadQuery } from "./../sanity/lib/load-query";
 import PortableTextImage from "./PortableTextImage.astro";
 
@@ -16,11 +17,9 @@ const { data: posts } = await loadQuery({
     <li class="hover:underline relative h-full mx-auto max-w-[500px] mb-2 group hover:z-10 rounded-lg">
       <div class="relative break-inside-avoid">
         <a
-          href={post.mainImage}
-          data-cropped="true"
+          href={urlForImage(post.mainImage).format("webp").url()}
           data-pswp-width={post.imageWidth}
           data-pswp-height={post.imageHeight}
-          data-pswp-src={post.mainImage}
         >
           <PortableTextImage
             classImg="max-w-full object-center rounded-lg transform group-hover:scale-105 group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] group-hover:shadow-fuchsia-500 transition-all duration-300"
