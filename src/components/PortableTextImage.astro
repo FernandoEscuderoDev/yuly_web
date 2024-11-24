@@ -6,17 +6,20 @@ const {
   asset = "",
   alt = "Imagen sin texto Alternativo",
   classImg = "",
+  tamanio = 1920,
   imageHeight = 1920,
   imageWidth = 1920,
 } = Astro.props;
+
+tamanio == 1920? Math.round((tamanio * imageHeight) / imageWidth) : tamanio
 ---
 
 <Picture
   class={classImg}
   src={urlForImage(asset)
-    .width(1920)
-    .height(Math.round((1920 * imageHeight) / imageWidth))
-    .quality(70)
+    .width(tamanio)
+    .height(tamanio)
+    .quality(80)
     .format("webp")
     .url()}
   width={500}
