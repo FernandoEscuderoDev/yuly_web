@@ -11,14 +11,14 @@ const {
   imageWidth = 1920,
 } = Astro.props;
 
-tamanio == 1920? Math.round((tamanio * imageHeight) / imageWidth) : tamanio
+let height = tamanio == 1920? Math.round((tamanio * imageHeight) / imageWidth) : tamanio
 ---
 
 <Picture
   class={classImg}
   src={urlForImage(asset)
     .width(tamanio)
-    .height(tamanio)
+    .height(height)
     .quality(80)
     .format("webp")
     .url()}
