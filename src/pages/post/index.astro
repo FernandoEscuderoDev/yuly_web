@@ -15,16 +15,18 @@ const POSTS_QUERY = `*[
   publishedAt,
   "bodyText": body[].children[].text,
   "mainImage": mainImage.asset->url,
+  "imageWidth": mainImage.asset->metadata.dimensions.width,
+  "imageHeight": mainImage.asset->metadata.dimensions.height,
   'alt' : mainImage.alt
 }`;
 
 const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // Asegúrate de incluir params
 ---
 
-<Layout>
-  <main class="container mx-auto min-h-screen ">
+<Layout title="Post">
+  <main class="container mx-auto min-h-screen">
     <h1 class="text-4xl font-bold py-4 text-center">Post</h1>
-    <ul class="flex flex-row justify-center flex-wrap gap-y-4 w-full ">
+    <ul class="flex flex-row justify-center flex-wrap gap-y-4 w-full">
       {
         posts.map((post) => (
           <li class="hover:underline capitalize p-5 md:mx-2 md:max-w-2xl">
@@ -33,6 +35,8 @@ const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // 
                 asset={post.mainImage}
                 alt={post.alt || "Imagen sin texto Alternativo"}
                 classImg="rounded-xl object-cover aspect-square"
+                imageHeight={post.imageHeight}
+                imageWidth={post.imageWidth}
               />
               <div class="my-2">
                 <time class="text-gray-300 hover:no-underline">
