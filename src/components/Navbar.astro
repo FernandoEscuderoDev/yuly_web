@@ -7,9 +7,9 @@ import logo from "../assets/images/logo.webp";
 ---
 
 <div
-  class="flex justify-between items-center text-xl p-4 border-b-2 border-fuchsia-800"
+  class="flex justify-between items-center text-xl p-4 border-b-2 border-fuchsia-700 max-h-40"
 >
-  <h1 class="w-24 h-24">
+  <h1 class='size-32'>
     <a href="/">
       <Image src={logo} alt="Logo" />
     </a>
@@ -17,13 +17,13 @@ import logo from "../assets/images/logo.webp";
   <nav class="flex flex-row relative md:gap-4">
     <button
       id="nav_button"
-      class="text-3xl lg:hidden"
+      class="text-3xl md:hidden"
       aria-label="Abre el menú de navegación"
     >
       <Icon name="menu" />
     </button>
-    <ul class="hidden lg:flex">
-      <Links classes="hidden lg:block" />
+    <ul class="hidden p-5 space-x-5 md:flex">
+      <Links classes="hidden md:block" />
     </ul>
     <MenuResponsive />
   </nav>

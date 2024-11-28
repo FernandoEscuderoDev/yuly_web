@@ -4,7 +4,7 @@ const { title = 'YulyVP' } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="scrollbar-thin scrollbar-thumb-fuchsia-950 scrollbar-track-fuchsia-700">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
@@ -13,8 +13,8 @@ const { title = 'YulyVP' } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="text-fuchsia-500 bg-fuchsia-950 ">
+	<body class="text-fuchsia-500 bg-fuchsia-950">
 		<Navbar/>
-		<slot />
+		<slot/>
 	</body>
 </html>

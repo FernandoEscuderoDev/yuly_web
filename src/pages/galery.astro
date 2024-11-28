@@ -1,0 +1,24 @@
+---
+import CardPost from "../components/CardPost.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout />
+<main class="mx-auto">
+  <ul class="my-5 mx-auto px-5 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5" id="my-gallery">
+    <CardPost />
+  </ul>
+</main>
+
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/style.css";
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: "#my-gallery div",
+    showHideAnimationType: "zoom",
+    closeOnVerticalDrag: true,
+    pswpModule: () => import("photoswipe"),
+  });
+  lightbox.init();
+</script>

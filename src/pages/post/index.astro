@@ -18,12 +18,12 @@ const POSTS_QUERY = `*[
   "imageWidth": mainImage.asset->metadata.dimensions.width,
   "imageHeight": mainImage.asset->metadata.dimensions.height,
   'alt' : mainImage.alt
-}`;
+}| order(publishedAt asc)`;
 
 const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // Asegúrate de incluir params
 ---
 
-<Layout title="Post">
+<Layout title="Blog">
   <main class="container mx-auto min-h-screen">
     <h1 class="text-4xl font-bold py-4 text-center">Post</h1>
     <ul class="flex flex-row justify-center flex-wrap gap-y-4 w-full">
