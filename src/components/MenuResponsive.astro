@@ -19,11 +19,12 @@ import { Icon } from "astro-icon/components";
   >
     <Icon name="close" />
   </button>
-  <ul>
+  <ul class="flex flex-col gap-2">
     <Links
       classes="bg-fuchsia-900 w-full py-2 px-4 rounded-lg hover:bg-fuchsia-800 hover:underline"
     />
   </ul>
+  <span class="absolute bottom-10 right-1/2 translate-x-1/2 translate-y-1/2 text-base animate-pulse">&copy;2024 By YulyVP</span>
 </div>
 <script>
   import { isSideMenuOpen } from "../store/store.js";

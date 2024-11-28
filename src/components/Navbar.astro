@@ -9,7 +9,7 @@ import logo from "../assets/images/logo.webp";
 <div
   class="flex justify-between items-center text-xl p-4 border-b-2 border-fuchsia-700 max-h-40"
 >
-  <h1 class='size-32'>
+  <h1 class="size-32">
     <a href="/">
       <Image src={logo} alt="Logo" />
     </a>
@@ -23,7 +23,9 @@ import logo from "../assets/images/logo.webp";
       <Icon name="menu" />
     </button>
     <ul class="hidden p-5 space-x-5 md:flex">
-      <Links classes="hidden md:block" />
+      <Links
+        classes="hidden transition-all duration-300 ease-in-out md:block hover:[text-shadow:_0_4px_8px_#E200FD]"
+      />
     </ul>
     <MenuResponsive />
   </nav>
