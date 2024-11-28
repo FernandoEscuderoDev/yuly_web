@@ -1,6 +1,7 @@
 ---
 import Links from "./Links.astro";
 import { Icon } from "astro-icon/components";
+import Textfooter from "./Textfooter.astro";
 ---
 
 <div
@@ -24,7 +25,7 @@ import { Icon } from "astro-icon/components";
       classes="bg-fuchsia-900 w-full py-2 px-4 rounded-lg hover:bg-fuchsia-800 hover:underline"
     />
   </ul>
-  <span class="absolute bottom-10 right-1/2 translate-x-1/2 translate-y-1/2 text-base animate-pulse">&copy;2024 By YulyVP</span>
+  <Textfooter classes="absolute bottom-10 right-1/2 translate-x-1/2 translate-y-1/2">&copy;2024 By YulyVP</Textfooter>
 </div>
 <script>
   import { isSideMenuOpen } from "../store/store.js";
