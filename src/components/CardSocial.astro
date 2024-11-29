@@ -1,36 +1,32 @@
 ---
-let redSocial = [
-  {
-    red: "Tiktok",
-    src: "https://www.tiktok.com/@yuuuly.vp",
-  },
-  {
-    red: "Instagram",
-    src: "https://www.instagram.com/yuuulyvp/",
-  },
-  {
-    red: "Facebook",
-    src: "https://www.facebook.com/people/Yuly-Vp/pfbid0dfHYEMYZT5BhMtcKqUY83Yu69uzd1XJ1K3GEiq8tzkDG54LtaiBEQTUcVkkRCYAsl/",
-  },
-  {
-    red: "Cara",
-    src: "https://cara.app/yulyvp",
-  },
-];
+export const prerender = false;
+import { loadQuery } from "./../sanity/lib/load-query";
+
+const { data: posts } = await loadQuery({
+  query: `*[_type == "SocialLink"] {
+    links[] {
+      redtitulo,
+      redhref
+    }
+  }`,
+  params: {},
+});
 ---
 
 <section
   class="flex flex-col justify-center items-center gap-5 mx-auto min-h-24-full w-full max-w-96 max-h-full"
 >
   {
-    redSocial.map((e) => (
-      <a
-        href={e.src}
-        target="_blank"
-        class="text-xl transition-all py-6 w-full border-[1px] rounded-xl border-[#8D0056] hover:bg-[#8D0056] active:bg-[#8D0056]"
-      >
-        {e.red}
-      </a>
-    ))
+    posts.map((post) =>
+      post.links.map((link) => (
+        <a
+          href={link.redhref}
+          target="_blank"
+          class="text-xl transition-all py-6 w-full border-[1px] rounded-xl border-[#af006b] hover:bg-[#af006b] active:bg-[#af006b]"
+        >
+          {link.redtitulo}
+        </a>
+      ))
+    )
   }
 </section>

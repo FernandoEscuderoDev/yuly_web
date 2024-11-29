@@ -4,7 +4,6 @@ import CardSocial from "../components/CardSocial.astro";
 import LayoutLinks from "../layouts/LayoutLinks.astro";
 import { loadQuery } from "./../sanity/lib/load-query";
 import { urlForImage } from "./../sanity/lib/urlForImage";
-import PortableTextImage from "../components/PortableTextImage.astro";
 import Image from "astro/components/Image.astro";
 
 const { data: posts } = await loadQuery({
@@ -35,7 +34,7 @@ const { data: posts } = await loadQuery({
       </div>
       <div class="min-w-34 mx-auto">
         <h1 class="font-catchyMager text-6xl">redes</h1>
-        <h2 class="text-md text-[#8D0056] tracking-[0.4em] relative bottom-3">
+        <h2 class="text-md text-[#af006b] tracking-[0.4em] relative bottom-3">
           follow me
         </h2>
         <a
