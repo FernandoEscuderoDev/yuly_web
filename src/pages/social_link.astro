@@ -1,41 +1,61 @@
 ---
 export const prerender = false;
 import CardSocial from "../components/CardSocial.astro";
-import { Image } from "astro:assets";
-import vizcacha from "../assets/images/vizcacha.webp";
-import titulo from "../assets//images/titulo.webp";
 import LayoutLinks from "../layouts/LayoutLinks.astro";
+import { loadQuery } from "./../sanity/lib/load-query";
+import { urlForImage } from "./../sanity/lib/urlForImage";
+import PortableTextImage from "../components/PortableTextImage.astro";
+import Image from "astro/components/Image.astro";
+
+const { data: posts } = await loadQuery({
+  query: `*[_type == 'sanity.imageAsset' && (title == "mediaLinkTitulo" || title == "mediaLinkVizcacha")]{url,
+  "imageWidth": metadata.dimensions.width,
+  "imageHeight": metadata.dimensions.height, 'alt' : alt}`,
+  params: {},
+});
+//HAY QUE ARREGLAR LOS IMG NO FUNCIONA EL SRC
 ---
 
 <LayoutLinks>
-    <main class="flex flex-col mx-auto py-10 px-14 gap-5">
-      <div class="flex flex-col items-center">
+  <main class="flex flex-col mx-auto py-10 px-14 gap-5">
+    <div class="flex flex-col justify-center items-center">
+      <div class="max-w-96 w-full min-w-72">
         <Image
-          class="max-w-96"
-          src={titulo}
+          class="w-full h-full"
+          src={urlForImage(posts[0].url)
+            .quality(10)
+            .format("webp")
+            .url()}
+            width={500}
+            height={500}
           alt="YulyVP"
-          quality={80}
           format="webp"
+          inferSize={true}
         />
-        <div class="min-w-34 mx-auto">
-          <h1 class="font-catchyMager text-6xl">redes</h1>
-          <h2 class="text-md text-[#8D0056] tracking-[0.4em] relative bottom-3">
-            follow me
-          </h2>
-          <a
-            href="mailto:vpyuly@gmail.com"
-            class="lowercase tracking-wider relative bottom-2"
-            >vpyuly@gmail.com</a
-          >
-        </div>
       </div>
-      <CardSocial />
-      <Image
-        class="size-52 mx-auto"
-        src={vizcacha}
-        alt="VizcachaVP con lentes durmiendo"
-        format="webp"
-        quality={80}
-      />
-    </main>
+      <div class="min-w-34 mx-auto">
+        <h1 class="font-catchyMager text-6xl">redes</h1>
+        <h2 class="text-md text-[#8D0056] tracking-[0.4em] relative bottom-3">
+          follow me
+        </h2>
+        <a
+          href="mailto:vpyuly@gmail.com"
+          class="lowercase tracking-wider relative bottom-2">vpyuly@gmail.com</a
+        >
+      </div>
+    </div>
+    <CardSocial />
+    <Image
+      class="size-52 mx-auto"
+      src={urlForImage(posts[1].url)
+        .width(500)
+        .height(500)
+        .quality(10)
+        .format("webp")
+        .url()}
+      alt="VizcachaVP con lentes durmiendo"
+      format="webp"
+      inferSize={true}
+    />
+  </main>
 </LayoutLinks>
