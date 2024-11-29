@@ -2,7 +2,6 @@
 import PortableTextImage from "../../components/PortableTextImage.astro";
 import Layout from "./../../layouts/Layout.astro";
 import { loadQuery } from "./../../sanity/lib/load-query"; // Importa la función loadQuery
-import { urlForImage } from "./../../sanity/lib/urlForImage"; // Asegúrate de importar urlForImage
 
 // Consulta para obtener los posts
 const POSTS_QUERY = `*[
@@ -18,7 +17,7 @@ const POSTS_QUERY = `*[
   "imageWidth": mainImage.asset->metadata.dimensions.width,
   "imageHeight": mainImage.asset->metadata.dimensions.height,
   'alt' : mainImage.alt
-}| order(publishedAt asc)`;
+}| order(publishedAt desc)`;
 
 const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // Asegúrate de incluir params
 ---

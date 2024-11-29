@@ -7,7 +7,7 @@ const { title = "YulyVP" } = Astro.props;
 <!doctype html>
 <html
   lang="es"
-  class="scrollbar-thin scrollbar-thumb-fuchsia-950 scrollbar-track-fuchsia-700"
+  class="scrollbar-thin scrollbar-track-fuchsia-950 scrollbar-thumb-fuchsia-700"
 >
   <head>
     <meta charset="UTF-8" />
@@ -23,3 +23,8 @@ const { title = "YulyVP" } = Astro.props;
     <Footer/>
   </body>
 </html>
+<style is:global>
+  html{
+    scrollbar-gutter: stable;
+  }
+</style>

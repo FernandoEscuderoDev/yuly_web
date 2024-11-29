@@ -1,0 +1,45 @@
+<!doctype html>
+<html
+  lang="es"
+  class="scrollbar-thin scrollbar-track-black scrollbar-thumb-[#8D0056]"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Redes sociales de YulyVP" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/icono.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>YulyVP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-black text-white text-center font-codecPro uppercase">
+    <slot />
+  </body>
+</html>
+<style>
+  html {
+    scrollbar-gutter: stable;
+  }
+  h2 {
+    font-family: "DM Sans";
+  }
+  @font-face {
+    font-family: "CarchyMager";
+    src: url("/fonts/CatchyMager-Normal.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "CodecPro";
+    src: url("/fonts/codec-pro.regular.ttf") format("ttf");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
