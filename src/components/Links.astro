@@ -6,8 +6,8 @@ const {classes} = Astro.props
 {
   links.map((link) => (
     <li class="flex">
-      <a 
-        class={`capitalize ${classes}`} 
+      <a
+        class={`capitalize ${classes}`}
         href={link === 'home' ? '/' : `/${link}`}
       >
         {link}

@@ -7,24 +7,24 @@ import logo from "../assets/images/logo.webp";
 ---
 
 <div
-  class="flex justify-between items-center text-xl p-4 border-b-2 border-fuchsia-700 max-h-40"
+  class="flex flex-col justify-center items-center text-xl pt-4 border-b-2 border-fuchsia-700"
 >
-  <h1 class="size-32">
-    <a href="/">
-      <Image src={logo} alt="Logo" />
+  <h1>
+    <a class="flex flex-col items-center justify-center text-white text-5xl" href="/">
+      YulyVP
     </a>
   </h1>
   <nav class="flex flex-row relative md:gap-4">
     <button
       id="nav_button"
-      class="text-3xl md:hidden"
+      class="text-4xl md:hidden"
       aria-label="Abre el menú de navegación"
     >
       <Icon name="menu" />
-    </button>
-    <ul class="hidden p-5 space-x-5 md:flex">
+  </button>
+    <ul class="hidden space-x-20 md:flex">
       <Links
-        classes="hidden transition-all duration-300 ease-in-out md:block hover:[text-shadow:_0_4px_8px_#E200FD]"
+        classes="hidden p-4 transition-all duration-300 ease-in-out md:block hover:[text-shadow:_0_4px_8px_#E200FD]"
       />
     </ul>
     <MenuResponsive />
