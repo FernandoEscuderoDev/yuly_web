@@ -5,10 +5,14 @@ import { Icon } from "astro-icon/components";
 ---
 
 <div
-  class="flex md:flex-col md:justify-center justify-between items-center px-4 text-xl border-b-2 border-fuchsia-700"
+  id="bgOpacity"
+  class="sticky top-0 z-50 overflow-hidden flex md:flex-col md:justify-center justify-between items-center px-4 text-xl border-b-2 border-fuchsia-700 backdrop-blur-md"
 >
   <h1>
-    <a class="flex items-center justify-center text-white text-4xl lg:text-5xl py-4" href="/">
+    <a
+      class="flex items-center justify-center text-white text-4xl lg:text-5xl py-4"
+      href="/"
+    >
       YULY VP
     </a>
   </h1>
@@ -19,15 +23,45 @@ import { Icon } from "astro-icon/components";
       aria-label="Abre el menú de navegación"
     >
       <Icon name="menu" />
-  </button>
-    <ul class="hidden space-x-20 md:flex">
+    </button>
+    <ul id="hiddenLinks" class="hidden space-x-20 md:flex">
       <Links
-        classes="hidden px-4 pb-4 transition-all duration-300 ease-in-out md:block hover:[text-shadow:_0_4px_8px_#E200FD]"
+        classes="hidden transition-all px-4 pb-4 duration-300 ease-in-out md:block hover:[text-shadow:_0_4px_8px_#E200FD]"
       />
     </ul>
-    <MenuResponsive />
   </nav>
 </div>
+<MenuResponsive />
+<style>
+  #bgOpacity {
+    animation: colorOpacity linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 100px;
+  }
+  @keyframes colorOpacity {
+    from {
+      background-color: black;
+    }
+    to {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  }
+  @media (min-width: 768px) {
+    #hiddenLinks {
+      animation: navbar linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100px;
+    }
+    @keyframes navbar {
+      from {
+        height: 45px;
+      }
+      to {
+        height: 0px;
+      }
+    }
+  }
+</style>
 
 <script>
   import { isSideMenuOpen } from "../store/store.js";
