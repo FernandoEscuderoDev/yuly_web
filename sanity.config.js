@@ -9,6 +9,5 @@ import {media} from 'sanity-plugin-media'
 export default defineConfig({
   projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
   dataset: import.meta.env.PUBLIC_SANITY_DATASET,
-  plugins: [structureTool(), visionTool(),unsplashImageAsset(),media()],
-  schema,
+  plugins: [structureTool(), visionTool(),unsplashImageAsset(),media()],schema,
 });
