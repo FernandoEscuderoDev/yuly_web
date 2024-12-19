@@ -14,7 +14,7 @@ const { data: posts } = await loadQuery({
 
 {
   posts.map((post) => (
-    <li class="md:hover:underline relative mx-auto max-w-[500px] mb-2 group md:hover:z-10 rounded-lg break-inside-avoid">
+    <li class="md:hover:underline relative max-w-full mb-4 group md:hover:z-30 rounded-lg break-inside-avoid">
       <div class="relative">
         <a
           href={urlForImage(post.mainImage)
@@ -26,7 +26,7 @@ const { data: posts } = await loadQuery({
           data-pswp-height={Math.round((1920 * post.imageHeight) / post.imageWidth)}
         >
           <PortableTextImage
-            classImg="max-w-full object-center rounded-lg transform md:group-hover:scale-105 md:group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] md:group-hover:shadow-fuchsia-500 transition-all duration-300"
+            classImg="max-w-full object-center rounded-lg transform md:group-hover:scale-105 md:group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] md:group-hover:shadow-fuchsia-500 transition-all duration-300 ease-in-out"
             asset={post.mainImage}
             alt={post.alt || "Imagen sin texto Alternativo"}
             imageHeight={post.imageHeight}
@@ -34,8 +34,8 @@ const { data: posts } = await loadQuery({
           />
         </a>
 
-        <div class="cursor-pointer absolute inset-0 transition-all rounded-lg duration-300 text-fuchsia-300 md:group-hover:scale-105 bg-fuchsia-950/40 flex flex-col justify-end items-start md:hover:text-fuchsia-50 md:hover:bg-fuchsia-950/0">
-          <div class="md:group-hover:bg-fuchsia-950/50 w-full p-4 rounded-b-lg transition-all">
+        <div class="cursor-pointer absolute inset-0 transition-all ease-in-out rounded-lg duration-300 text-fuchsia-300 md:group-hover:scale-105 bg-fuchsia-950/40 flex flex-col justify-end items-start md:hover:text-fuchsia-50 md:hover:bg-fuchsia-950/0">
+          <div class="md:group-hover:bg-fuchsia-950/50 w-full p-4 rounded-b-lg transition-all duration-300 ease-in-out">
             <h2 class="text-xl font-semibold capitalize">{post.title}</h2>
           </div>
         </div>

@@ -23,8 +23,8 @@ const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // 
 ---
 
 <Layout title="Blog">
-  <main class="container mx-auto min-h-screen">
-    <h1 class="text-4xl font-bold py-4 text-center">Post</h1>
+  <main class="container mx-auto min-h-screen p-4">
+    <h1 class="text-4xl font-bold mb-4 text-center">Post</h1>
     <ul class="flex flex-row justify-center flex-wrap gap-y-4 w-full">
       {
         posts.map((post) => (
@@ -42,7 +42,7 @@ const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // 
                 <time class="text-gray-300">
                   {new Date(post.publishedAt).toLocaleDateString()}
                 </time>
-                <h2 class="text-xl font-semibold">{post.title}</h2>
+                <h1 class="text-xl font-semibold">{post.title}</h1>
                 <p class="text-white">
                   {post.bodyText ? post.bodyText : "..."}
                 </p>

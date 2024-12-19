@@ -6,12 +6,12 @@ import Textfooter from "./Textfooter.astro";
 
 <div
   id="side_menu_bg"
-  class="fixed h-screen w-screen z-10 bg-fuchsia-950 opacity-90 hidden backdrop-blur-md transition-all duration-300 top-0 right-0"
+  class="fixed h-screen w-screen z-10 -translate-x-full bg-fuchsia-950 opacity-90 backdrop-blur-md transition-all ease-in-out duration-500 top-0 right-0"
 >
 </div>
 <div
   id="side_menu"
-  class="flex z-50 top-0 right-0 flex-col gap-2 h-screen py-4 px-4 w-72 sm:w-80 md:w-96 fixed translate-x-full transition-all duration-300 bg-fuchsia-900 text-xl"
+  class="flex z-50 top-0 right-0 flex-col gap-2 h-screen py-4 px-4 w-72 sm:w-80 md:w-96 fixed translate-x-full transition-all ease-in-out duration-500 bg-fuchsia-900 text-xl"
 >
   <button
     class="p-2 rounded-md text-2xl hover:bg-fuchsia-800 self-end"
@@ -20,48 +20,61 @@ import Textfooter from "./Textfooter.astro";
   >
     <Icon name="close" />
   </button>
-  <ul class="flex flex-col gap-2">
+  <ul class="flex flex-col gap-2 flex-[1]">
     <Links
       classes="bg-fuchsia-900 w-full py-2 px-4 rounded-lg hover:bg-fuchsia-800 hover:underline"
     />
   </ul>
-  <Textfooter
-    classes="absolute bottom-10 right-1/2 translate-x-1/2 translate-y-1/2"
-  />
+  <Textfooter classes="text-center" />
 </div>
 <script>
   import { isSideMenuOpen } from "../store/store.js";
 
-  // Escucha los cambios en el store y muestra/oculta el diálogo en consecuencia
-  isSideMenuOpen.subscribe((open) => {
+  // Función para inicializar los eventos
+  const initEvents = () => {
+    const button = document.getElementById("nav_button");
     const sideMenu = document.getElementById("side_menu");
     const sideMenuBackground = document.getElementById("side_menu_bg");
+    const sideMenuCross = document.getElementById("side_menu_cross");
 
-    if (open) {
-      sideMenuBackground.classList.remove("hidden");
-      sideMenu.classList.remove("translate-x-full");
-      sideMenu.classList.add("translate-x-0");
-    } else {
-      sideMenuBackground.classList.add("hidden");
-      sideMenu.classList.remove("translate-x-0");
-      sideMenu.classList.add("translate-x-full");
+    if (button) {
+      button.addEventListener("click", () => {
+        isSideMenuOpen.set(true);
+      });
     }
-  });
 
-  // Función para cerrar el menú lateral
-  const handleCloseSideMenu = () => {
-    isSideMenuOpen.set(false);
+    if (sideMenu && sideMenuBackground && sideMenuCross) {
+      const handleCloseSideMenu = () => {
+        isSideMenuOpen.set(false);
+      };
+
+      isSideMenuOpen.subscribe((open) => {
+        if (open) {
+          sideMenuBackground.classList.remove("-translate-x-full");
+          sideMenuBackground.classList.add("-translate-x-1/3");
+          sideMenu.classList.remove("translate-x-full");
+          sideMenu.classList.add("translate-x-0");
+        } else {
+          sideMenuBackground.classList.remove("-translate-x-1/3");
+          sideMenuBackground.classList.add("-translate-x-full");
+          sideMenu.classList.remove("translate-x-0");
+          sideMenu.classList.add("translate-x-full");
+        }
+      });
+
+      sideMenuCross.addEventListener("click", handleCloseSideMenu);
+      sideMenuBackground.addEventListener("click", handleCloseSideMenu);
+    }
   };
 
-  // Agregar eventos de cierre
-  const sideMenuCross = document.getElementById("side_menu_cross");
-  const sideMenuBackground = document.getElementById("side_menu_bg");
-
-  sideMenuCross.addEventListener("click", () => {
-    handleCloseSideMenu();
+  // Escuchar el evento `astro:after-swap` para reinicializar eventos después de una transición
+  document.addEventListener("astro:after-swap", () => {
+    isSideMenuOpen.set(false);
+    initEvents();
   });
 
-  sideMenuBackground.addEventListener("click", () => {
-    handleCloseSideMenu();
+  // Inicializar los eventos en la primera carga
+  document.addEventListener("DOMContentLoaded", () => {
+    initEvents();
   });
 </script>

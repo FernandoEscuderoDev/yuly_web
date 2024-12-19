@@ -3,35 +3,34 @@ import MenuResponsive from "./MenuResponsive.astro";
 import Links from "./Links.astro";
 import { Icon } from "astro-icon/components";
 ---
-
-<div
-  id="bgOpacity"
-  class="sticky top-0 z-50 overflow-hidden flex md:flex-col md:justify-center justify-between items-center px-4 text-xl border-b-2 border-fuchsia-700 backdrop-blur-md"
->
-  <h1>
-    <a
-      class="flex items-center justify-center text-white text-4xl lg:text-5xl py-4"
-      href="/"
-    >
-      YULY VP
-    </a>
-  </h1>
-  <nav class="flex flex-row relative md:gap-4">
-    <button
-      id="nav_button"
-      class="text-4xl md:hidden"
-      aria-label="Abre el menú de navegación"
-    >
-      <Icon name="menu" />
-    </button>
-    <ul id="hiddenLinks" class="hidden space-x-20 md:flex">
-      <Links
-        classes="hidden transition-all px-4 pb-4 duration-300 ease-in-out md:block hover:[text-shadow:_0_4px_8px_#E200FD]"
-      />
-    </ul>
-  </nav>
-</div>
-<MenuResponsive />
+  <div
+    id="bgOpacity"
+    class="sticky top-0 z-50 overflow-hidden flex md:flex-col md:justify-center justify-between items-center px-4 text-xl border-b-2 border-fuchsia-700 backdrop-blur-md"
+  >
+    <h1>
+      <a
+        class="flex items-center justify-center text-white text-4xl lg:text-5xl py-4"
+        href="/"
+      >
+        YULY VP
+      </a>
+    </h1>
+    <nav class="flex flex-row relative md:gap-4">
+      <button
+        id="nav_button"
+        class="text-4xl md:hidden"
+        aria-label="Abre el menú de navegación"
+      >
+        <Icon name="menu" />
+      </button>
+      <ul id="hiddenLinks" class="hidden space-x-20 md:flex">
+        <Links
+          classes="hidden transition-all px-4 pb-4 duration-300 ease-in-out md:block "
+        />
+      </ul>
+    </nav>
+  </div>
+  <MenuResponsive />
 <style>
   #bgOpacity {
     animation: colorOpacity linear both;
@@ -66,15 +65,17 @@ import { Icon } from "astro-icon/components";
 <script>
   import { isSideMenuOpen } from "../store/store.js";
 
+  // Función para abrir el menú
   const handleOpenSideMenu = () => {
     isSideMenuOpen.set(true);
   };
 
-  // Espera a que el DOM esté completamente cargado
-  document.addEventListener("click", () => {
+  // Inicializar eventos cuando el DOM esté listo
+  document.addEventListener("DOMContentLoaded", () => {
     const button = document.getElementById("nav_button");
     if (button) {
       button.addEventListener("click", handleOpenSideMenu);
     }
   });
 </script>
+
