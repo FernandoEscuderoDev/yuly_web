@@ -22,7 +22,9 @@ const { title = "YulyVP" } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="grid min-h-screen text-fuchsia-500 bg-[#0D000A]">
+  <body
+    class="grid min-h-screen text-fuchsia-500 bg-[#0D000A]"
+  >
     <div
       class="fixed inset-0 -z-20 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#330029_100%)]"
     >
@@ -38,6 +40,17 @@ const { title = "YulyVP" } = Astro.props;
   }
   body {
     grid-template-rows: auto 1fr auto;
+  }
+  img {
+    user-select: none;
+  }
+  strong {
+    color: transparent;
+    background-clip: text;
+    --tw-gradient-from: #ff5cde var(--tw-gradient-from-position);
+    --tw-gradient-to: #FF00CC var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    background-image: linear-gradient(to right, var(--tw-gradient-stops));
   }
   .pswp__dynamic-caption {
     color: #fff;

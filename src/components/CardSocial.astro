@@ -20,8 +20,10 @@ const { data: posts } = await loadQuery({
     posts.map((post) =>
       post.links.map((link) => (
         <a
+          translate="no"
           href={link.redhref}
           target="_blank"
+          rel="noopener noreferrer"
           class="text-xl transition-all py-6 w-full border-[1px] rounded-xl border-[#af006b] hover:bg-[#af006b] active:bg-[#af006b]"
         >
           {link.redtitulo}

@@ -1,9 +1,75 @@
 ---
-import Layout from "../layouts/Layout.astro"
+export const prerender = false;
+import PortableText from "../components/PortableText.astro";
+import PortableTextImage from "../components/PortableTextImage.astro";
+import Layout from "../layouts/Layout.astro";
+import { loadQuery } from "../sanity/lib/load-query";
+
+const { data: aboutMe } = await loadQuery({
+  query: `*[_type == "aboutMe"][0]{
+    title,
+    content,
+    "imageUrl": image.asset->url,
+    "imageWidth": image.asset->metadata.dimensions.width,
+    "imageHeight": image.asset->metadata.dimensions.height, 'alt' : image.alt,
+    socialLinks[]{
+      platform,
+      url
+    }
+  }`,
+  params: {},
+});
 ---
 
 <Layout>
-  <main class="p-4">
-
+  <main
+    class="p-4 flex flex-col mx-auto md:flex-row items-center leading-relaxed gap-4 text-white"
+  >
+    {
+      aboutMe ? (
+        <>
+          {aboutMe.imageUrl && (
+            <div class="text-center w-full h-full">
+              <PortableTextImage
+                classImg="w-full h-full object-cover rounded-md"
+                asset={aboutMe.imageUrl}
+                alt={aboutMe.alt || "Imagen sin texto Alternativo"}
+                imageHeight={aboutMe.imageHeight}
+                imageWidth={aboutMe.imageWidth}
+                tamanio={500}
+                calidad={100}
+              />
+            </div>
+          )}
+          <div class="text-balance h-full max-w-prose flex flex-col gap-4">
+            <h1 class="text-3xl font-semibold">{aboutMe.title}</h1>
+            <div class="w-full">
+              <PortableText portableText={aboutMe.content} />
+            </div>
+            {aboutMe.socialLinks?.length > 0 ? (
+              <ul translate="no" class="">
+                {aboutMe.socialLinks.map((link) => (
+                  <li>
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {link.platform}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="text-lg mt-4">
+                No se encontraron enlaces a redes sociales.
+              </p>
+            )}
+          </div>
+        </>
+      ) : (
+        <p class="text-lg mt-4">No se encontró información sobre mí.</p>
+      )
+    }
   </main>
 </Layout>

@@ -9,7 +9,7 @@ export default {
         rasputin: ["Rasputin", "arial"],
       },
       backgroundImage:{
-        'bg-image': "url('https://cdn.sanity.io/images/1q969eeu/production/833cbdf0d8b7e6fe41939e206cda1c3887710778-4000x2000.png?w=1920&h=960&fm=webp&q=50')"
+        'bg-image': "url('https://cdn.sanity.io/images/1q969eeu/production/833cbdf0d8b7e6fe41939e206cda1c3887710778-4000x2000.png?w=1920&h=960&fm=webp&q=80')"
       },
       colors: {
         fuchsia: {
