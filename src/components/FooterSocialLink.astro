@@ -1,0 +1,33 @@
+---
+import { Icon } from "astro-icon/components";
+
+const red = [
+  {
+    name: "facebook",
+    url: "https://www.facebook.com/people/Yuly-Vp/pfbid02hnXCyzAJKe9xCBELQ8mzx8e8yfWE1ZMFXxbR1xdhRyQAiFuQ1amwycNddMwCEnqhlhttps://www.facebook.com/people/Yuly-Vp/pfbid0dm3YWCGRvez8f1GQM5KwxGC8wo7nmxweqc1SftSBjfbFRVRPhhaA9moz8q91Mfx6l/",
+  },
+  { name: "tiktok", url: "https://www.tiktok.com/@yuuuly.vp" },
+  { name: "instagram", url: "https://www.instagram.com/yuuulyvp/" },
+  { name: "cara", url: "https://cara.app/yulyvp" },
+];
+---
+
+{
+  red.map((link) => (
+    <li class="overflow-hidden rounded-full p-1">
+      <a
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-white text-4xl"
+      >
+        <Icon name={link.name} />
+      </a>
+    </li>
+  ))
+}
+<style>
+  li{
+    background: linear-gradient(320deg, #111111, #222224);
+  }
+</style>
