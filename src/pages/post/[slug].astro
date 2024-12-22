@@ -24,7 +24,9 @@ export async function getStaticPaths() {
 const { params } = Astro;
 
 const { data: post } = await loadQuery({
-  query: `*[_type == "post" && slug.current == $slug][0]{title,publishedAt, body, mainImage, categories[]->{
+  query: `*[_type == "post" && slug.current == $slug][0]{title,publishedAt, body, mainImage,
+    "imageWidth": mainImage.asset->metadata.dimensions.width,
+    "imageHeight": mainImage.asset->metadata.dimensions.height, categories[]->{
     title,
   }}`,
   params, // Aseguramos que se pase params al objeto
@@ -44,6 +46,9 @@ const { data: post } = await loadQuery({
         <PortableTextImage
           asset={post.mainImage.asset}
           alt={post.mainImage.alt}
+          tamanio={1000}
+          imageHeight={post.imageHeight}
+          imageWidth={post.imageWidth}
           classImg="w-full h-full object-cover"
         />
       )
