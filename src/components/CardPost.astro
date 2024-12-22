@@ -4,27 +4,34 @@ import { urlForImage } from "../sanity/lib/urlForImage";
 import { loadQuery } from "./../sanity/lib/load-query";
 import PortableTextImage from "./PortableTextImage.astro";
 
-const { data: posts } = await loadQuery({
-  query: `*[_type == "cardGallery" && defined(slug.current)]{title, "mainImage": mainImage.asset->url,
-  "imageWidth": mainImage.asset->metadata.dimensions.width,
-  "imageHeight": mainImage.asset->metadata.dimensions.height, 'alt' : mainImage.alt,'caption': caption} | order(publishedAt asc)`,
-  params: {},
-});
+let posts = [];
+
+try {
+  const { data } = await loadQuery({
+    query: `*[_type == "cardGallery" && defined(slug.current)]{title, "mainImage": mainImage.asset->url,
+    "imageWidth": mainImage.asset->metadata.dimensions.width,
+    "imageHeight": mainImage.asset->metadata.dimensions.height, 'alt' : mainImage.alt,'caption': caption} | order(publishedAt asc)`,
+    params: {},
+  });
+  posts = data;
+} catch (error) {
+  console.error("Error loading posts please check your connection and try again");
+}
 ---
 
-{
+{posts.length > 0 ? (
   posts.map((post) => (
     <li class="md:hover:underline pswp-gallery__item relative max-w-full mb-4 group md:hover:z-30 rounded-lg break-inside-avoid">
       <a
         href={urlForImage(post.mainImage)
-          .width(1920)
-          .height(Math.round((1920 * post.imageHeight) / post.imageWidth))
+          .width(800) // Ajusta el tamaño aquí
+          .height(Math.round((800 * post.imageHeight) / post.imageWidth))
           .format("webp")
           .quality(80)
           .url()}
-        data-pswp-width={1920}
+        data-pswp-width={800}
         data-pswp-height={Math.round(
-          (1920 * post.imageHeight) / post.imageWidth
+          (800 * post.imageHeight) / post.imageWidth
         )}
         data-pswp-caption={post.alt || "Imagen sin texto Alternativo"}
       >
@@ -34,6 +41,7 @@ const { data: posts } = await loadQuery({
           alt={post.alt || "Imagen sin texto Alternativo"}
           imageHeight={post.imageHeight}
           imageWidth={post.imageWidth}
+          tamanio={800} // Ajusta el tamaño aquí
         />
       </a>
       <div class="pswp-caption-content text-balance">
@@ -42,4 +50,6 @@ const { data: posts } = await loadQuery({
       </div>
     </li>
   ))
-}
+) : (
+  <p>No se encontraron publicaciones.</p>
+)}
