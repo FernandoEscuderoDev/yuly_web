@@ -1,6 +1,8 @@
 ---
 import CardPost from "../components/CardPost.astro";
 import Layout from "../layouts/Layout.astro";
+import "photoswipe/style.css";
+import "photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css";
 ---
 
 <Layout>
@@ -15,7 +17,7 @@ import Layout from "../layouts/Layout.astro";
 </Layout>
 <script>
   import PhotoSwipeLightbox from "photoswipe/lightbox";
-  import "photoswipe/style.css";
+  import PhotoSwipeDynamicCaption from "photoswipe-dynamic-caption-plugin";
 
   let lightbox;
 
@@ -27,10 +29,21 @@ import Layout from "../layouts/Layout.astro";
     }
 
     lightbox = new PhotoSwipeLightbox({
-      gallery: "#my-gallery div",
-      showHideAnimationType: "zoom",
+      gallery: "#my-gallery",
+      childSelector: ".pswp-gallery__item",
+      showHideAnimationType: "fade",
       closeOnVerticalDrag: true,
+      bgOpacity: 0.9,
+      wheelToZoom: true,
       pswpModule: () => import("photoswipe"),
+    });
+
+    const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {
+      type: "auto",
+      captionContent: '.pswp-caption-content',
+      mobileLayoutBreakpoint: 600,
+      horizontalEdgeThreshold: 20,
+      mobileCaptionOverlapRatio: 0.3,
     });
 
     lightbox.init();
