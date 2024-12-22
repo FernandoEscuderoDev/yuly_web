@@ -15,41 +15,42 @@ try {
   });
   posts = data;
 } catch (error) {
-  console.error("Error loading posts please check your connection and try again");
+  console.error(
+    "Error loading posts please check your connection and try again"
+  );
 }
 ---
 
-{posts.length > 0 ? (
-  posts.map((post) => (
-    <li class="md:hover:underline pswp-gallery__item relative max-w-full mb-4 group md:hover:z-30 rounded-lg break-inside-avoid">
-      <a
-        href={urlForImage(post.mainImage)
-          .width(800) // Ajusta el tamaño aquí
-          .height(Math.round((800 * post.imageHeight) / post.imageWidth))
-          .format("webp")
-          .quality(80)
-          .url()}
-        data-pswp-width={800}
-        data-pswp-height={Math.round(
-          (800 * post.imageHeight) / post.imageWidth
-        )}
-        data-pswp-caption={post.alt || "Imagen sin texto Alternativo"}
-      >
-        <PortableTextImage
-          classImg="max-w-full object-center rounded-lg transform md:group-hover:scale-105 md:group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] md:group-hover:shadow-fuchsia-500 transition-all duration-300 ease-in-out"
-          asset={post.mainImage}
-          alt={post.alt || "Imagen sin texto Alternativo"}
-          imageHeight={post.imageHeight}
-          imageWidth={post.imageWidth}
-          tamanio={800} // Ajusta el tamaño aquí
-        />
-      </a>
-      <div class="pswp-caption-content text-balance">
-        <h2 class="text-xl font-bold">{post.title}</h2>
-        <p>{post.caption || "Imagen sin texto Alternativo"}</p>
-      </div>
-    </li>
-  ))
-) : (
-  <p>No se encontraron publicaciones.</p>
-)}
+{
+  posts.length > 0 ? (
+    posts.map((post) => (
+      <li class="md:hover:underline pswp-gallery__item relative max-w-full mb-4 group md:hover:z-30 rounded-lg break-inside-avoid">
+        <a
+          href={urlForImage(post.mainImage)
+            .width(post.imageWidth) // Mantén el ancho original
+            .height(post.imageHeight) // Mantén la altura original
+            .format("webp")// Ajusta la calidad según sea necesario
+            .url()}
+          data-pswp-width={post.imageWidth}
+          data-pswp-height={post.imageHeight}
+          data-pswp-caption={post.alt || "Imagen sin texto Alternativo"}
+        >
+          <PortableTextImage
+            classImg="max-w-full object-center rounded-lg transform md:group-hover:scale-105 md:group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] md:group-hover:shadow-fuchsia-500 transition-all duration-300 ease-in-out"
+            asset={post.mainImage}
+            alt={post.alt || "Imagen sin texto Alternativo"}
+            imageHeight={post.imageHeight}
+            imageWidth={post.imageWidth}
+            tamanio={500}
+          />
+        </a>
+        <div class="pswp-caption-content text-balance">
+          <h2 class="text-xl font-bold">{post.title}</h2>
+          <p>{post.caption || "Imagen sin texto Alternativo"}</p>
+        </div>
+      </li>
+    ))
+  ) : (
+    <p>No se encontraron publicaciones.</p>
+  )
+}
