@@ -22,9 +22,7 @@ const { title = "YulyVP" } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body
-    class="grid min-h-screen text-fuchsia-500 bg-[#0D000A]"
-  >
+  <body class="grid min-h-screen text-fuchsia-500 bg-[#0D000A]">
     <div
       class="fixed inset-0 -z-20 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#330029_100%)]"
     >
@@ -44,14 +42,54 @@ const { title = "YulyVP" } = Astro.props;
   img {
     user-select: none;
   }
+  /*Blog Style*/
+
+  #textAbout ul {
+    list-style: disc;
+    list-style-position: inside;
+  }
+  #textAbout ol {
+    list-style: decimal;
+    list-style-position: inside;
+  }
+  #textAbout a{
+    color: fuchsia;
+    background-color: rgba(255, 0, 255, 0.20);
+    text-decoration: underline;
+  }
+  #textAbout a:hover{
+    color: rgb(248, 113, 248);
+  }
+
+  span[style] {
+    text-decoration-color: fuchsia !important;
+  }
+  code {
+    background-color: #1e1e2f;
+    width: 100%; /* Fondo oscuro */
+    color: #c3e88d; /* Texto verde claro */
+    font-family: monospace; /* Fuente monoespaciada elegante */
+    font-size: 14px; /* Tamaño de fuente */
+    padding: 6px 10px; /* Espaciado interno */
+    border-radius: 6px; /* Bordes redondeados */
+    display: inline-block; /* Mantener el contenido alineado */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra más definida */
+    border: 1px solid #3a3f5c; /* Borde sutil */
+    white-space: pre-wrap; /* Para manejar saltos de línea */
+  }
+  del {
+    text-decoration-color: fuchsia !important;
+    text-decoration-style: wavy;
+  }
   strong {
     color: transparent;
     background-clip: text;
     --tw-gradient-from: #ff5cde var(--tw-gradient-from-position);
-    --tw-gradient-to: #FF00CC var(--tw-gradient-to-position);
+    --tw-gradient-to: #ff00cc var(--tw-gradient-to-position);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
     background-image: linear-gradient(to right, var(--tw-gradient-stops));
   }
+  /*Blog Style*/
   .pswp__dynamic-caption {
     color: #fff;
     width: 100%;

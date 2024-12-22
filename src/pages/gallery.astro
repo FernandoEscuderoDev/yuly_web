@@ -40,7 +40,7 @@ import "photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css"
 
     const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {
       type: "auto",
-      captionContent: '.pswp-caption-content',
+      captionContent: ".pswp-caption-content",
       mobileLayoutBreakpoint: 600,
       horizontalEdgeThreshold: 20,
       mobileCaptionOverlapRatio: 0.3,
@@ -54,8 +54,5 @@ import "photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css"
     initLightbox();
   });
 
-  // Inicializar el Lightbox en la primera carga
-  document.addEventListener("DOMContentLoaded", () => {
-    initLightbox();
-  });
+  initLightbox();
 </script>

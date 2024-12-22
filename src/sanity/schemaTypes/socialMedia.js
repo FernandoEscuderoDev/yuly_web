@@ -6,38 +6,49 @@ export const socialMedia = defineType({
   fields: [
     defineField({
       name: "links",
+      title: "Redes",
       type: "array",
       title: "Social Links",
       of: [
         {
           type: "object",
-          title:'Redes',
+          title: "Redes",
           fields: [
             {
               name: "redtitulo",
               type: "string",
               title: "Red",
+              validation: (Rule) =>
+                Rule.required()
+                  .min(2)
+                  .max(50)
+                  .warning("El título debe tener entre 2 y 50 caracteres"),
             },
             {
               name: "redhref",
-              type: "string",
-              title: "link",
+              type: "url",
+              title: "Link",
+              validation: (Rule) =>
+                Rule.required()
+                  .uri({ scheme: ["http", "https"] })
+                  .warning("Debe ser una URL válida"),
             },
           ],
         },
       ],
     }),
   ],
+
   preview: {
     select: {
-      links: "links",
+      title: "links.0.redtitulo",
+      subtitle: "links.0.redhref",
     },
-    prepare({ links }) {
+    prepare(selection) {
+      const { title, subtitle } = selection;
       return {
-        title: "Links Redes",
-        subtitle: links
-          ? `${links.length} link(s)`
-          : "Sin links",
+        title: title || "Sin título",
+        subtitle: subtitle || "Sin enlace",
       };
     },
   },

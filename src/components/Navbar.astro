@@ -3,68 +3,71 @@ import MenuResponsive from "./MenuResponsive.astro";
 import Links from "./Links.astro";
 import { Icon } from "astro-icon/components";
 ---
-  <div
-    id="bgOpacity"
-    class="sticky top-0 z-50 overflow-hidden flex md:flex-col md:justify-center justify-between items-center px-4 text-xl border-b-2 border-fuchsia-700 backdrop-blur-md"
-  >
-    <h1 translate="no">
-      <a
-        class="flex items-center justify-center text-white text-4xl lg:text-5xl py-4"
-        href="/"
-      >
-        YULY VP
-      </a>
-    </h1>
-    <nav class="flex flex-row relative md:gap-4">
-      <button
-        id="nav_button"
-        class="text-4xl md:hidden"
-        aria-label="Abre el menú de navegación"
-      >
-        <Icon name="menu" />
-      </button>
-      <ul id="hiddenLinks" class="hidden space-x-20 md:flex">
-        <Links
-          classes="hidden transition-all px-4 pb-4 duration-300 ease-in-out md:block "
-        />
-      </ul>
-    </nav>
-  </div>
-  <MenuResponsive />
+
+<div
+  class="sticky bg-black/90 top-0 z-50 overflow-hidden flex md:flex-col md:justify-center justify-between items-center px-4 text-xl border-b-2 border-fuchsia-700 backdrop-blur-md"
+>
+  <h1 translate="no">
+    <a
+      class="flex items-center justify-center text-white text-4xl lg:text-5xl py-4"
+      href="/"
+    >
+      YULY VP
+    </a>
+  </h1>
+  <nav class="flex flex-row relative md:gap-4">
+    <button
+      id="nav_button"
+      class="text-4xl md:hidden"
+      aria-label="Abre el menú de navegación"
+    >
+      <Icon name="menu" />
+    </button>
+    <ul id="hiddenLinks" class="hidden space-x-20 md:flex">
+      <Links
+        classes="hidden transition-all px-4 pb-4 duration-300 ease-in-out md:block "
+      />
+    </ul>
+  </nav>
+</div>
+<MenuResponsive />
 <style>
-  #bgOpacity {
-    animation: colorOpacity linear both;
-    animation-timeline: scroll(root);
-    animation-range: 0 100px;
-  }
-  @keyframes colorOpacity {
-    from {
-      background-color: black;
-    }
-    to {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-  }
-  @media (min-width: 768px) {
-    #hiddenLinks {
-      animation: navbar linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100px;
-    }
-    @keyframes navbar {
-      from {
-        height: 45px;
-      }
-      to {
-        height: 0px;
-      }
-    }
+  /* Ocultar enlaces por defecto */
+  #hiddenLinks {
+    transition: height 0.3s linear; /* Transición suave para el cambio de altura */
   }
 </style>
 
 <script>
   import { isSideMenuOpen } from "../store/store.js";
 
+  let lastKnownScrollPosition = 0;
+  let ticking = false;
+
+  function handleScroll() {
+    lastKnownScrollPosition = window.scrollY;
+
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const scrollPosition = lastKnownScrollPosition;
+
+        // Manipulación de la altura dinámica para #hiddenLinks
+        if (window.innerWidth >= 768) {
+          const hiddenLinks = document.getElementById("hiddenLinks");
+          if (hiddenLinks) {
+            const height = Math.max(0, 45 - (scrollPosition / 80) * 45); // Altura decreciente
+            hiddenLinks.style.height = `${height}px`;
+          }
+        }
+
+        ticking = false;
+      });
+
+      ticking = true;
+    }
+  }
+
+  document.addEventListener("scroll", handleScroll);
   // Función para abrir el menú
   const handleOpenSideMenu = () => {
     isSideMenuOpen.set(true);
@@ -78,4 +81,3 @@ import { Icon } from "astro-icon/components";
     }
   });
 </script>
-

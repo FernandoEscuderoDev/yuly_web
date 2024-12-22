@@ -23,7 +23,7 @@ const { data: aboutMe } = await loadQuery({
 
 <Layout>
   <main
-    class="p-4 flex flex-col mx-auto md:flex-row items-center leading-relaxed gap-4 text-white"
+    class="px-4 my-10 flex flex-col mx-auto md:flex-row items-center leading-relaxed gap-4 text-white"
   >
     {
       aboutMe ? (
@@ -43,28 +43,9 @@ const { data: aboutMe } = await loadQuery({
           )}
           <div class="text-balance h-full max-w-prose flex flex-col gap-4">
             <h1 class="text-3xl font-semibold">{aboutMe.title}</h1>
-            <div class="w-full">
+            <div id="textAbout" class="w-full">
               <PortableText portableText={aboutMe.content} />
             </div>
-            {aboutMe.socialLinks?.length > 0 ? (
-              <ul translate="no" class="">
-                {aboutMe.socialLinks.map((link) => (
-                  <li>
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {link.platform}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p class="text-lg mt-4">
-                No se encontraron enlaces a redes sociales.
-              </p>
-            )}
           </div>
         </>
       ) : (
