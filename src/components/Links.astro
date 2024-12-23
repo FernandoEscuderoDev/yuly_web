@@ -1,7 +1,7 @@
 ---
 let links = ["home", "gallery", "post", "about"];
 const currentPath = Astro.url.pathname;
-const {classes} = Astro.props
+const {classes, classLi} = Astro.props
 ---
 
 {
@@ -9,7 +9,7 @@ const {classes} = Astro.props
     const href = link === "home" ? "/" : `/${link}`;
     const isActive = currentPath === href; // Determina si el enlace está activo
     return (
-      <li class="flex">
+      <li class={`flex ${classLi}`}>
         <a
           href={href}
           class={`capitalize font-medium ${classes} ${

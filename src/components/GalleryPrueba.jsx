@@ -16,13 +16,13 @@ function GalleryPrueba() {
     const fetchPosts = async () => {
       try {
         const { data } = await loadQuery({
-          query: `*[_type == "cardGallery" && defined(slug.current)] | order(publishedAt) [${page * 6} ... ${(page + 1) * 6}]{title, "mainImage": mainImage.asset->url,
+          query: `*[_type == "cardGallery" && defined(slug.current)] | order(publishedAt) [${page * 20} ... ${(page + 1) * 20}]{title, "mainImage": mainImage.asset->url,
           "imageWidth": mainImage.asset->metadata.dimensions.width,
           "imageHeight": mainImage.asset->metadata.dimensions.height, 'alt' : mainImage.alt,'caption': caption} `,
           params: {},
         });
         setPosts((prevPosts) => [...prevPosts, ...data]);
-        if (data.length < 6) {
+        if (data.length < 20) {
           setHasMore(false);
         }
       } catch (error) {
@@ -104,9 +104,9 @@ function GalleryPrueba() {
         <div className="flex justify-center p-2">
           <button
             onClick={loadMorePosts}
-            className="text-white load-more-button"
+            className="text-white hover:text-fuchsia-500 load-more-button border border-white rounded-md p-2 active:translate-y-1 active:shadow-lg hover:shadow-md transition-transform duration-75 ease-in-out"
           >
-            Cargar más
+            More
           </button>
         </div>
       )}

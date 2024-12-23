@@ -5,7 +5,7 @@ import { Icon } from "astro-icon/components";
 ---
 
 <div
-  class="sticky bg-black/90 top-0 z-50 overflow-hidden flex md:flex-col md:justify-center justify-between items-center px-4 text-xl border-b-2 border-fuchsia-700 backdrop-blur-md"
+  class="sticky bg-black/90 top-0 z-50 overflow-hidden flex md:flex-row md:justify-between justify-between items-center px-4 text-xl border-b-2 border-fuchsia-700 backdrop-blur-md"
 >
   <h1 translate="no">
     <a
@@ -23,51 +23,18 @@ import { Icon } from "astro-icon/components";
     >
       <Icon name="menu" />
     </button>
-    <ul id="hiddenLinks" class="hidden space-x-20 md:flex">
+    <ul id="hiddenLinks" class="hidden space-x-4 md:flex md:items-center">
       <Links
-        classes="hidden transition-all px-4 pb-4 duration-300 ease-in-out md:block "
+        classes="hidden transition-all py-4 px-4 duration-300 ease-in-out md:block"
+        classLi="items-center"
       />
     </ul>
   </nav>
 </div>
 <MenuResponsive />
-<style>
-  /* Ocultar enlaces por defecto */
-  #hiddenLinks {
-    transition: height 0.3s linear; /* Transición suave para el cambio de altura */
-  }
-</style>
-
 <script>
   import { isSideMenuOpen } from "../store/store.js";
 
-  let lastKnownScrollPosition = 0;
-  let ticking = false;
-
-  function handleScroll() {
-    lastKnownScrollPosition = window.scrollY;
-
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const scrollPosition = lastKnownScrollPosition;
-
-        // Manipulación de la altura dinámica para #hiddenLinks
-        if (window.innerWidth >= 768) {
-          const hiddenLinks = document.getElementById("hiddenLinks");
-          if (hiddenLinks) {
-            const height = Math.max(0, 45 - (scrollPosition / 80) * 45); // Altura decreciente
-            hiddenLinks.style.height = `${height}px`;
-          }
-        }
-
-        ticking = false;
-      });
-
-      ticking = true;
-    }
-  }
-
-  document.addEventListener("scroll", handleScroll);
   // Función para abrir el menú
   const handleOpenSideMenu = () => {
     isSideMenuOpen.set(true);
