@@ -16,13 +16,13 @@ function GalleryPrueba() {
     const fetchPosts = async () => {
       try {
         const { data } = await loadQuery({
-          query: `*[_type == "cardGallery" && defined(slug.current)] | order(publishedAt) [${page * 4} ... ${(page + 1) * 4}]{title, "mainImage": mainImage.asset->url,
+          query: `*[_type == "cardGallery" && defined(slug.current)] | order(publishedAt) [${page * 6} ... ${(page + 1) * 6}]{title, "mainImage": mainImage.asset->url,
           "imageWidth": mainImage.asset->metadata.dimensions.width,
           "imageHeight": mainImage.asset->metadata.dimensions.height, 'alt' : mainImage.alt,'caption': caption} `,
           params: {},
         });
         setPosts((prevPosts) => [...prevPosts, ...data]);
-        if (data.length < 4) {
+        if (data.length < 6) {
           setHasMore(false);
         }
       } catch (error) {
