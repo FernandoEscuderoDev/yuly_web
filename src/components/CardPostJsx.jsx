@@ -31,6 +31,7 @@ function CardPostJsx({
             .quality(70) // Ajusta la calidad según sea necesario
             .url()}
           loading="lazy"
+          decoding="async"
           alt={alt || "Imagen sin texto Alternativo"}
           height={imageHeight}
           width={imageWidth}
