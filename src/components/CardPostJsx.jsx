@@ -10,7 +10,7 @@ function CardPostJsx({
   caption,
 }) {
   return (
-    <li class="md:hover:underline pswp-gallery__item max-w-full mb-4 group md:hover:z-30 rounded-lg break-inside-avoid">
+    <li className="md:hover:underline pswp-gallery__item max-w-full mb-4 group md:hover:z-30 rounded-lg break-inside-avoid">
       <a
         href={urlForImage(mainImage)
           .width(1920) // Mantén el ancho original
@@ -23,7 +23,7 @@ function CardPostJsx({
         data-pswp-caption={alt || "Imagen sin texto Alternativo"}
       >
         <img
-          class="max-w-full object-cover rounded-lg transform md:group-hover:scale-105 md:group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] md:group-hover:shadow-fuchsia-500 transition-all duration-300 ease-in-out backdrop-filter backdrop-blur-md bg-opacity-20 bg-white"
+          className="max-w-full object-cover rounded-lg transform md:group-hover:scale-105 md:group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] md:group-hover:shadow-fuchsia-500 transition-all duration-300 ease-in-out backdrop-filter backdrop-blur-md bg-opacity-20 bg-white"
           src={urlForImage(mainImage)
             .width(1920) // Mantén el ancho original
             .height(Math.round((1920 * imageHeight) / imageWidth))
@@ -36,8 +36,8 @@ function CardPostJsx({
           width={imageWidth}
         />
       </a>
-      <div class="pswp-caption-content text-balance">
-        <h2 class="text-xl font-bold">{title}</h2>
+      <div className="pswp-caption-content text-balance">
+        <h2 className="text-xl font-bold">{title}</h2>
         <p>{caption || "Imagen sin texto Alternativo"}</p>
       </div>
     </li>
