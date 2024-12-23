@@ -23,27 +23,27 @@ const { data: aboutMe } = await loadQuery({
 
 <Layout>
   <main
-    class="px-4 my-10 flex flex-col mx-auto md:flex-row items-center leading-relaxed gap-4 text-white"
+    class="p-4 my-4 flex flex-col mx-auto lg:flex-row items-center leading-relaxed gap-4 text-white"
   >
     {
       aboutMe ? (
         <>
           {aboutMe.imageUrl && (
-            <div class="text-center w-full h-full">
+            <div class="text-center w-full h-96 md:w-96 md:h-full">
               <PortableTextImage
                 classImg="w-full h-full object-cover rounded-md"
                 asset={aboutMe.imageUrl}
                 alt={aboutMe.alt || "Imagen sin texto Alternativo"}
                 imageHeight={aboutMe.imageHeight}
                 imageWidth={aboutMe.imageWidth}
-                tamanio={500}
+                tamanio={1920}
                 calidad={100}
               />
             </div>
           )}
-          <div class="text-balance h-full max-w-prose flex flex-col gap-4">
+          <div class="text-balance md:p-4 h-full max-w-prose flex flex-col gap-4">
             <h1 class="text-3xl font-semibold">{aboutMe.title}</h1>
-            <div id="textAbout" class="w-full">
+            <div id="textAbout" class="flex flex-col gap-2">
               <PortableText portableText={aboutMe.content} />
             </div>
           </div>
