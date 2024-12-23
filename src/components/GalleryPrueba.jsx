@@ -5,6 +5,7 @@ import { loadQuery } from "../sanity/lib/load-query";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import PhotoSwipeDynamicCaption from "photoswipe-dynamic-caption-plugin";
 import { useEffect, useState, useRef } from "react";
+import { urlForImage } from "../sanity/lib/urlForImage.js";
 
 function GalleryPrueba() {
   const [posts, setPosts] = useState([]);
@@ -86,9 +87,14 @@ function GalleryPrueba() {
           <CardPost
             key={index}
             title={post.title}
-            mainImage={post.mainImage}
-            imageWidth={post.imageWidth}
-            imageHeight={post.imageHeight}
+            mainImage={urlForImage(post.mainImage)
+              .width(1920) // Mantén el ancho original
+              .height(Math.round((1920 * post.imageHeight) / post.imageWidth))
+              .format("webp")
+              .quality(100) // Ajusta la calidad según sea necesario
+              .url()}
+            imageWidth={1920}
+            imageHeight={Math.round((1920 * post.imageHeight) / post.imageWidth)}
             alt={post.alt}
             caption={post.caption}
           />
