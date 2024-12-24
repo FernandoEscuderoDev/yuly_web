@@ -7,7 +7,7 @@ import PhotoSwipeDynamicCaption from "photoswipe-dynamic-caption-plugin";
 import { useEffect, useState } from "react";
 import { urlForImage } from "../sanity/lib/urlForImage.js";
 
-function GalleryPrueba() {
+function sketchGallery() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -16,7 +16,7 @@ function GalleryPrueba() {
     const fetchPosts = async () => {
       try {
         const { data } = await loadQuery({
-          query: `*[_type == "cardGallery"] | order(_createdAt) [${page * 20} ... ${(page + 1) * 20}]{title, "mainImage": mainImage.asset->url,
+          query: `*[_type == "sketchGallery"] | order(publishedAt) [${page * 20} ... ${(page + 1) * 20}]{title, "mainImage": mainImage.asset->url,
           "imageWidth": mainImage.asset->metadata.dimensions.width,
           "imageHeight": mainImage.asset->metadata.dimensions.height, 'alt' : mainImage.alt,'caption': caption} `,
           params: {},
@@ -114,4 +114,4 @@ function GalleryPrueba() {
   );
 }
 
-export default GalleryPrueba;
+export default sketchGallery;

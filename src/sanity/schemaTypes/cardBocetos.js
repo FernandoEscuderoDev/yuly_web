@@ -1,9 +1,9 @@
 import { defineField, defineType } from "sanity";
 
-export const cardGallery = defineType({
-  name: "cardGallery",
+export const cardBocetos = defineType({
+  name: "sketchGallery",
   type: "document",
-  title: "Galería de Dibujos",
+  title: "Galería de Bocetos",
   fields: [
     defineField({
       name: "title",
@@ -31,7 +31,8 @@ export const cardGallery = defineType({
           name: "alt",
           type: "string",
           title: "Texto Alternativo",
-          description: "Texto descriptivo de la imagen para lectores de pantalla",
+          description:
+            "Texto descriptivo de la imagen para lectores de pantalla",
         },
       ],
     }),
@@ -40,7 +41,8 @@ export const cardGallery = defineType({
       type: "text",
       title: "Leyenda",
       description: "Texto para la leyenda de la imagen, máximo 150 caracteres",
-      validation: (Rule) => Rule.max(150).warning('¡Excedes los 150 caracteres!'),
+      validation: (Rule) =>
+        Rule.max(150).warning("¡Excedes los 150 caracteres!"),
     }),
   ],
 });

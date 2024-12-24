@@ -3,6 +3,7 @@ import { defineField, defineType } from "sanity";
 export const socialMedia = defineType({
   name: "SocialLink",
   type: "document",
+  title: "Redes Sociales",
   fields: [
     defineField({
       name: "links",

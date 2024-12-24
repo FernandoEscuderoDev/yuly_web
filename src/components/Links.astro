@@ -1,7 +1,7 @@
 ---
-let links = ["home", "gallery", "post", "about"];
+let links = ["home", "gallery", "sketch", "post", "about"];
 const currentPath = Astro.url.pathname;
-const {classes, classLi} = Astro.props
+const { classes, classLi } = Astro.props;
 ---
 
 {
@@ -13,7 +13,9 @@ const {classes, classLi} = Astro.props
         <a
           href={href}
           class={`capitalize font-medium ${classes} ${
-            isActive ? "bg-clip-text text-transparent bg-gradient-to-r from-[#ff9fec] to-[#e23cc1]" :"text-white"
+            isActive
+              ? "bg-clip-text text-transparent bg-gradient-to-r from-[#ff9fec] to-[#e23cc1]"
+              : "text-white"
           } transition-all duration-300 ease-in-out [text-shadow:_0_2px_8px_#E200FD]`}
         >
           {link}
@@ -22,4 +24,3 @@ const {classes, classLi} = Astro.props
     );
   })
 }
-

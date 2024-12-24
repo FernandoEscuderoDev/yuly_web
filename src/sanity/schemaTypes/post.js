@@ -3,15 +3,19 @@ import { defineField, defineType } from "sanity";
 export const postType = defineType({
   name: "post",
   type: "document",
+  title: "Artículos",
   fields: [
     defineField({
       name: "title",
       type: "string",
+      title: "Título",
+      description: "El título del artículo",
     }),
     defineField({
       name: "categories",
       type: "array",
-      title: "Categories",
+      title: "Categorías",
+      description: "Las categorías a las que pertenece el artículo",
       of: [
         {
           type: "reference",
@@ -22,6 +26,8 @@ export const postType = defineType({
     defineField({
       name: "slug",
       type: "slug",
+      title: "Slug",
+      description: "El slug del artículo, generado a partir del título",
       options: {
         source: "title",
         maxLength: 96,
@@ -30,6 +36,8 @@ export const postType = defineType({
     defineField({
       name: "mainImage",
       type: "image",
+      title: "Imagen Principal",
+      description: "La imagen principal del artículo",
       options: {
         hotspot: true,
       },
@@ -37,18 +45,23 @@ export const postType = defineType({
         {
           name: "alt",
           type: "string",
-          title: "Alternative Text",
+          title: "Texto Alternativo",
+          description: "Texto alternativo para la imagen principal",
         },
       ],
     }),
     defineField({
       name: "publishedAt",
       type: "datetime",
+      title: "Fecha de Publicación",
+      description: "La fecha y hora en que se publicó el artículo",
       initialValue: () => new Date().toISOString(),
     }),
     defineField({
       name: "body",
       type: "blockContent",
+      title: "Cuerpo",
+      description: "El contenido principal del artículo",
     }),
   ],
 });
