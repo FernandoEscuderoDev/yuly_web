@@ -22,7 +22,7 @@ const { title = "YulyVP" } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="grid min-h-screen text-fuchsia-500 bg-[#0D000A]">
+  <body class="grid min-h-screen text-fuchsia-500 bg-[#0D000A] selection:bg-fuchsia-700">
     <div
       class="fixed inset-0 -z-20 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#330029_100%)]"
     >
@@ -60,7 +60,9 @@ const { title = "YulyVP" } = Astro.props;
   #textAbout a:hover{
     color: rgb(248, 113, 248);
   }
-
+  #textAbout a:visited{
+    color: white;
+  }
   span[style] {
     text-decoration-color: fuchsia !important;
   }
@@ -88,6 +90,14 @@ const { title = "YulyVP" } = Astro.props;
     --tw-gradient-to: #ff00cc var(--tw-gradient-to-position);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
     background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  }
+
+  strong::selection{
+    color: #f8f8f2;
+    background-clip: none;
+  }
+  em::selection{
+    color: white;
   }
   /*Blog Style*/
   .pswp__dynamic-caption {

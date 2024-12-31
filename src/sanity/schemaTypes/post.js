@@ -57,6 +57,12 @@ export const postType = defineType({
       description: "La fecha y hora en que se publicó el artículo",
       initialValue: () => new Date().toISOString(),
     }),
+    {
+      name: "destacado",
+      type: "boolean",
+      title: "Destacado",
+      description: "Marcar como destacado para mostrar en el carrousel.",
+    },
     defineField({
       name: "body",
       type: "blockContent",
@@ -64,4 +70,18 @@ export const postType = defineType({
       description: "El contenido principal del artículo",
     }),
   ],
+  preview: {
+    select: {
+      title: "title",
+      media: "mainImage",
+      destacado: "destacado",
+    },
+    prepare({ title, media, destacado }) {
+      return {
+        title: title,
+        media: media,
+        subtitle: destacado ? "Destacado" : "No destacado",
+      };
+    },
+  },
 });

@@ -12,7 +12,7 @@ const { classes, classLi } = Astro.props;
       <li class={`flex ${classLi}`}>
         <a
           href={href}
-          class={`capitalize font-medium ${classes} ${
+          class={`capitalize font-medium selection:text-white ${classes} ${
             isActive
               ? "bg-clip-text text-transparent bg-gradient-to-r from-[#ff9fec] to-[#e23cc1]"
               : "text-white"

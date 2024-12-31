@@ -1,56 +1,12 @@
 ---
-import PortableTextImage from "../../components/PortableTextImage.astro";
+import BackgroundBlog from "../../components/BackgroundBlog.astro";
+import PostSection from "../../components/PostSection.jsx";
 import Layout from "./../../layouts/Layout.astro";
-import { loadQuery } from "./../../sanity/lib/load-query"; // Importa la función loadQuery
-
-// Consulta para obtener los posts
-const POSTS_QUERY = `*[
-  _type == "post"
-  && defined(slug.current)
-]|order(publishedAt desc){
-  _id,
-  title,
-  slug,
-  publishedAt,
-  "bodyText": body[].children[].text,
-  "mainImage": mainImage.asset->url,
-  "imageWidth": mainImage.asset->metadata.dimensions.width,
-  "imageHeight": mainImage.asset->metadata.dimensions.height,
-  'alt' : mainImage.alt
-}| order(publishedAt desc)`;
-
-const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} }); // Asegúrate de incluir params
 ---
 
 <Layout title="Blog">
-  <main class="container mx-auto min-h-screen p-4">
-    <h1 class="text-4xl font-bold mb-4 text-center">Post</h1>
-    <ul class="flex flex-row justify-center flex-wrap gap-y-4 w-full">
-      {
-        posts.map((post) => (
-          <li class="rounded-md capitalize w-full bg-fuchsia-900 overflow-hidden md:mx-2 md:max-w-lg">
-            <a href={`/post/${post.slug.current}`} class="">
-              <PortableTextImage
-                asset={post.mainImage}
-                alt={post.alt || "Imagen sin texto Alternativo"}
-                classImg="object-cover w-full"
-                imageHeight={post.imageHeight}
-                imageWidth={post.imageWidth}
-                tamanio="500"
-              />
-              <div class="m-2 leading-normal line-clamp-3">
-                <time class="text-gray-300">
-                  {new Date(post.publishedAt).toLocaleDateString()}
-                </time>
-                <h1 class="text-xl font-semibold">{post.title}</h1>
-                <p class="text-white">
-                  {post.bodyText ? post.bodyText : "..."}
-                </p>
-              </div>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </main>
+  <div>
+    <BackgroundBlog />
+    <PostSection client:load/>
+  </div>
 </Layout>

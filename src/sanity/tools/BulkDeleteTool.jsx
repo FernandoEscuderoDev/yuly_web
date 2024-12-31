@@ -13,6 +13,7 @@ import {
   Heading,
   ToastProvider,
   useToast,
+  Container,
 } from "@sanity/ui";
 import { loadQuery } from "../lib/load-query";
 import { urlForImage } from "../lib/urlForImage";
@@ -56,7 +57,8 @@ const BulkDeleteTool = () => {
         toast.push({
           status: "success",
           title: "Éxito",
-          description: "Publicaciones eliminadas correctamente. Esto puede tardar unos segundos en reflejarse.",
+          description:
+            "Publicaciones eliminadas correctamente. Esto puede tardar unos segundos en reflejarse.",
         });
         setSelectedIds([]);
         fetchDocuments();
@@ -64,7 +66,8 @@ const BulkDeleteTool = () => {
         toast.push({
           status: "error",
           title: "Error",
-          description: "Error al eliminar las publicaciones. Inténtalo de nuevo.",
+          description:
+            "Error al eliminar las publicaciones. Inténtalo de nuevo.",
         });
       }
     }
@@ -98,33 +101,50 @@ const BulkDeleteTool = () => {
 
   return (
     <ToastProvider>
-      <Box padding={4}>
-        <Stack space={4}>
-          <Heading as="h1" size={2}>
-            Herramienta de Eliminación Masiva
-          </Heading>
-          <Text size={1}>
-            Selecciona un tipo de documento y marca las publicaciones que deseas
-            eliminar. Luego, haz clic en "Eliminar seleccionados" para
-            eliminarlas.
-          </Text>
-          <Select
-            onChange={(e) => setSelectedType(e.target.value)}
-            value={selectedType}
-          >
-            <option value="" disabled>
-              Selecciona un tipo de documento
-            </option>
-            {documentTypes.map((type) => (
-              <option key={type} value={type}>
-                {type}
+      <Container
+        width={2}
+        display={"flex"}
+        style={{
+          flexDirection: "column",
+          height: "90svh",
+          maxHeight: "100%",
+          marginTop: "20px",
+        }}
+      >
+        <Box padding={4}>
+          <Stack space={4}>
+            <Heading as="h1" size={2}>
+              Herramienta de Eliminación Masiva
+            </Heading>
+            <Text size={1}>
+              Selecciona un tipo de documento y marca las publicaciones que
+              deseas eliminar. Luego, haz clic en "Eliminar seleccionados" para
+              eliminarlas.
+            </Text>
+            <Select
+              onChange={(e) => setSelectedType(e.target.value)}
+              value={selectedType}
+            >
+              <option value="" disabled>
+                Selecciona un tipo de documento
               </option>
-            ))}
-          </Select>
-          <Grid columns={[1, 2, 3]} gap={4}>
+              {documentTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </Select>
+          </Stack>
+        </Box>
+        <Box
+          display={"flex"}
+          style={{ flex: 1, flexDirection: "column" }}
+          padding={4}
+        >
+          <Grid columns={[1, 2, 2, 3]} gap={4}>
             {documents.map((doc) => (
               <Card key={doc._id} padding={4} shadow={1} radius={2}>
-                <Flex align="center">
+                <Flex gap={2}>
                   <Checkbox
                     checked={selectedIds.includes(doc._id)}
                     onChange={() => handleSelect(doc._id)}
@@ -133,34 +153,37 @@ const BulkDeleteTool = () => {
                     <img
                       src={urlFor(doc.mainImage)}
                       alt={doc.title}
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        marginLeft: "10px",
-                      }}
                     />
                   ) : (
-                    <Text style={{ marginLeft: "10px" }}>Sin imagen</Text>
+                    <Text>Sin imagen</Text>
                   )}
-                  <Text style={{ marginLeft: "10px" }}>{doc.title}</Text>
+                  <Text
+                    style={{
+                      backgroundColor: "red",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {doc.title}
+                  </Text>
                 </Flex>
               </Card>
             ))}
           </Grid>
-        </Stack>
-        <Box>
-          <Text size={1} style={{marginTop:30, marginBottom:10}} tone="critical">
-            Asegúrate de seleccionar correctamente lo que deseas eliminar, ya que
-            esta acción es irreversible.
+        </Box>
+        <Box marginY={4} paddingX={4}>
+          <Text size={1} tone="critical">
+            Asegúrate de seleccionar correctamente lo que deseas eliminar, ya
+            que esta acción es irreversible.
           </Text>
           <Button
             text="Eliminar seleccionados"
             tone="critical"
             onClick={handleDelete}
-            style={{ width: "100%" }}
+            style={{ marginTop: "20px" }}
           />
         </Box>
-      </Box>
+      </Container>
     </ToastProvider>
   );
 };
