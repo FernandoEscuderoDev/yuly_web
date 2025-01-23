@@ -1,12 +1,32 @@
 ---
 import BackgroundBlog from "../../components/BackgroundBlog.astro";
-import PostSection from "../../components/PostSection.jsx";
+import PostGrid from "../../components/PostGrid.jsx";
+import PostSection from "../../components/PostSection";
+import { loadQuery } from "../../sanity/lib/load-query";
 import Layout from "./../../layouts/Layout.astro";
+
+const POSTS_QUERY = `*[ 
+  _type == "post" 
+  && defined(slug.current)
+]|order(publishedAt desc)[0...12]{
+  _id,
+  title,
+  slug,
+  publishedAt,
+  description,
+  "mainImage": mainImage.asset->url,
+  "imageWidth": mainImage.asset->metadata.dimensions.width,
+  "imageHeight": mainImage.asset->metadata.dimensions.height,
+  'alt' : mainImage.alt
+}`;
+
+const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} });
 ---
 
 <Layout title="Blog">
-  <div>
     <BackgroundBlog />
-    <PostSection client:load/>
+  <div>
+    <PostGrid posts={posts} client:load />
+    <PostSection client:load />
   </div>
 </Layout>

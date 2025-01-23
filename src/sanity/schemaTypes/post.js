@@ -12,18 +12,6 @@ export const postType = defineType({
       description: "El título del artículo",
     }),
     defineField({
-      name: "categories",
-      type: "array",
-      title: "Categorías",
-      description: "Las categorías a las que pertenece el artículo",
-      of: [
-        {
-          type: "reference",
-          to: [{ type: "category" }], // Referencia al esquema de categorías
-        },
-      ],
-    }),
-    defineField({
       name: "slug",
       type: "slug",
       title: "Slug",
@@ -63,6 +51,13 @@ export const postType = defineType({
       title: "Destacado",
       description: "Marcar como destacado para mostrar en el carrousel.",
     },
+    defineField({
+      name: "description",
+      type: "text",
+      title: "Descripción",
+      description: "Breve descripción o resumen del artículo",
+      validation: Rule => Rule.max(100).warning('La descripción no debería ser más larga de 100 caracteres')
+    }),
     defineField({
       name: "body",
       type: "blockContent",

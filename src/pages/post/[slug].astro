@@ -4,7 +4,6 @@ import { loadQuery } from "./../../sanity/lib/load-query";
 import PortableText from "./../../components/PortableText.astro";
 import Layout from "./../../layouts/Layout.astro";
 import PortableTextImage from "../../components/PortableTextImage.astro";
-import TagsPost from "./../../components/TagsPost.astro";
 
 export async function getStaticPaths() {
   const { data: posts } = await loadQuery({
@@ -26,9 +25,7 @@ const { params } = Astro;
 const { data: post } = await loadQuery({
   query: `*[_type == "post" && slug.current == $slug][0]{title,publishedAt, body, mainImage,
     "imageWidth": mainImage.asset->metadata.dimensions.width,
-    "imageHeight": mainImage.asset->metadata.dimensions.height, categories[]->{
-    title,
-  }}`,
+    "imageHeight": mainImage.asset->metadata.dimensions.height}`,
   params, // Aseguramos que se pase params al objeto
 });
 ---
@@ -55,13 +52,6 @@ const { data: post } = await loadQuery({
     }
     <div class="p-4">
       <h1 class="text-4xl font-bold capitalize">{post.title}</h1>
-      <ul class="space-x-1 my-2 capitalize">
-        {
-          post.categories.map((category) => (
-            <TagsPost>{category.title}</TagsPost>
-          ))
-        }
-      </ul>
       <div class="prose">
         <p>
           Published: {new Date(post.publishedAt).toLocaleDateString()}
