@@ -2,62 +2,101 @@
 export const prerender = true;
 import { loadQuery } from "./../../sanity/lib/load-query";
 import PortableText from "./../../components/PortableText.astro";
-import Layout from "./../../layouts/Layout.astro";
+import Layout from "./../../layouts/Layout.astro"; 
 import PortableTextImage from "../../components/PortableTextImage.astro";
 
+// Obtener todas las rutas de posts estáticas
 export async function getStaticPaths() {
   const { data: posts } = await loadQuery({
-    query: `*[_type == "post"]{slug}`,
+    query: `*[_type == "post"] {
+      "slug": slug.current,
+      title
+    }`,
     params: {},
   });
 
-  return posts.map(({ slug }) => {
-    return {
-      params: {
-        slug: slug.current,
-      },
-    };
-  });
+  return posts.map(({ slug, title }) => ({
+    params: { slug },
+    props: { title }
+  }));
 }
 
-const { params } = Astro;
+const { params, props } = Astro;
 
+// Obtener datos completos del post actual
 const { data: post } = await loadQuery({
-  query: `*[_type == "post" && slug.current == $slug][0]{title,publishedAt, body, mainImage,
+  query: `*[_type == "post" && slug.current == $slug][0]{
+    title,
+    publishedAt,
+    description,
+    body,
+    "mainImage": mainImage {
+      asset->,
+      alt,
+    },
     "imageWidth": mainImage.asset->metadata.dimensions.width,
-    "imageHeight": mainImage.asset->metadata.dimensions.height}`,
-  params, // Aseguramos que se pase params al objeto
+    "imageHeight": mainImage.asset->metadata.dimensions.height
+  }`,
+  params,
+});
+
+// Formatear fecha
+const publishDate = new Date(post.publishedAt).toLocaleDateString('es-ES', {
+  year: 'numeric',
+  month: 'long', 
+  day: 'numeric'
 });
 ---
 
-<Layout title={post.title}>
-  <main class="container mx-auto max-w-3xl flex flex-col h-[5000px] text-white">
-    <a
-      href="/post"
-      class="hover:underline font-bold fixed text-xl p-4 bg-black/50 w-full"
-      >&larr; Back to posts</a
-    >
+<Layout title={`${post.title} | Yuly Blog`}>
+  <article class="container mx-auto max-w-3xl text-white">
+    {/* Botón fijo para volver */}
+    <nav class="sticky top-0 z-10 backdrop-blur-md bg-black/50 border-b border-fuchsia-500/20">
+      <a
+        href="/post"
+        class="block px-6 py-4 text-xl font-bold hover:text-fuchsia-400 transition-colors"
+      >
+        &larr; Volver a posts
+      </a>
+    </nav>
 
-    {
-      post.mainImage && (
+    {/* Hero image */}
+    {post.mainImage && (
+      <div class="relative h-[50vh] md:h-[60vh]">
         <PortableTextImage
           asset={post.mainImage.asset}
-          alt={post.mainImage.alt}
-          tamanio={1000}
+          alt={post.mainImage.alt || post.title}
+          tamanio={1200}
           imageHeight={post.imageHeight}
           imageWidth={post.imageWidth}
           classImg="w-full h-full object-cover"
         />
-      )
-    }
-    <div class="p-4">
-      <h1 class="text-4xl font-bold capitalize">{post.title}</h1>
-      <div class="prose">
-        <p>
-          Published: {new Date(post.publishedAt).toLocaleDateString()}
-        </p>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+      </div>
+    )}
+
+    {/* Contenido */}
+    <div class="p-6 md:p-8 space-y-6">
+      <header class="space-y-2">
+        <h1 class="text-4xl md:text-5xl font-bold capitalize">{post.title}</h1>
+        {post.description && (
+          <p class="text-xl text-gray-300 font-light">{post.description}</p>
+        )}
+        <time class="block text-sm text-gray-400" datetime={post.publishedAt}>
+          Publicado el {publishDate}
+        </time>
+      </header>
+
+      <div class="prose prose-invert prose-lg max-w-none 
+                  prose-headings:text-white
+                  prose-p:text-gray-300
+                  prose-a:text-fuchsia-400 prose-a:no-underline hover:prose-a:text-fuchsia-300
+                  prose-strong:text-white
+                  prose-code:text-white
+                  prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800
+                  prose-blockquote:text-gray-400 prose-blockquote:border-fuchsia-500">
         <PortableText portableText={post.body} />
       </div>
     </div>
-  </main>
+  </article>
 </Layout>
