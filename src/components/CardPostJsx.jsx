@@ -1,4 +1,3 @@
-// CardPostJsx.jsx
 import React, { memo } from 'react';
 
 const CardPostJsx = memo(({
@@ -19,23 +18,25 @@ const CardPostJsx = memo(({
         href={fullImage}
         data-pswp-width={imageWidth}
         data-pswp-height={imageHeight}
-        className="block overflow-hidden rounded-lg"
+        className="block overflow-hidden rounded-lg transition-shadow duration-300 hover:shadow-lg"
         role="button"
         aria-label={`Ver detalle de: ${srCaption}`}
         tabIndex="0"
       >
-        <img
-          src={thumbnail}
-          alt={altText}
-          loading="lazy"
-          decoding="async"
-          className="w-full h-auto object-cover"
-          style={{
-            aspectRatio: `${imageWidth}/${imageHeight}`,
-            backgroundColor: '#f5f5f5'
-          }}
-          aria-describedby={`desc-${title}`}
-        />
+        <div className="overflow-hidden rounded-lg">
+          <img
+            src={thumbnail}
+            alt={altText}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-auto object-cover transition-transform duration-300 transform group-hover:scale-105"
+            style={{
+              aspectRatio: `${imageWidth}/${imageHeight}`,
+              backgroundColor: '#f5f5f5'
+            }}
+            aria-describedby={`desc-${title}`}
+          />
+        </div>
         
         {/* Contenido oculto para el lightbox */}
         <div className="sr-only" aria-hidden="true">
