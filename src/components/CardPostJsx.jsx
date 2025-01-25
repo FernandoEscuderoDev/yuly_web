@@ -1,38 +1,55 @@
-import React from "react";
-import { urlForImage } from "../sanity/lib/urlForImage";
+// CardPostJsx.jsx
+import React, { memo } from 'react';
 
-function CardPostJsx({
+const CardPostJsx = memo(({
   title,
-  mainImage,
+  thumbnail,
+  fullImage,
   imageWidth,
   imageHeight,
   alt,
-  caption,
-}) {
+  caption
+}) => {
+  const altText = alt || caption || title || "Imagen de la galería";
+  const srCaption = title || caption ? `${title} ${caption}` : altText;
+
   return (
-    <li className="md:hover:underline pswp-gallery__item max-w-full mb-4 group md:hover:z-30 rounded-lg break-inside-avoid">
+    <li className="relative mb-4 break-inside-avoid group">
       <a
-        href={mainImage}
-        data-pswp-width={1920}
+        href={fullImage}
+        data-pswp-width={imageWidth}
         data-pswp-height={imageHeight}
-        data-pswp-caption={alt || "Imagen sin texto Alternativo"}
+        className="block overflow-hidden rounded-lg"
+        role="button"
+        aria-label={`Ver detalle de: ${srCaption}`}
+        tabIndex="0"
       >
         <img
-          className="max-w-full object-cover rounded-lg transform md:group-hover:scale-105 md:group-hover:shadow-[rgba(0,_0,_0,_0.10)_0px_0px_60px_-10px] md:group-hover:shadow-fuchsia-500 transition-all duration-300 ease-in-out backdrop-filter backdrop-blur-md bg-opacity-20 bg-white"
-          src={mainImage}
+          src={thumbnail}
+          alt={altText}
           loading="lazy"
           decoding="async"
-          alt={alt || "Imagen sin texto Alternativo"}
-          height={imageHeight}
-          width={imageWidth}
+          className="w-full h-auto object-cover"
+          style={{
+            aspectRatio: `${imageWidth}/${imageHeight}`,
+            backgroundColor: '#f5f5f5'
+          }}
+          aria-describedby={`desc-${title}`}
         />
+        
+        {/* Contenido oculto para el lightbox */}
+        <div className="sr-only" aria-hidden="true">
+          <div className="pswp-caption-title">{title}</div>
+          <div className="pswp-caption-text">{caption}</div>
+        </div>
+
+        {/* Descripción accesible */}
+        <div id={`desc-${title}`} className="sr-only">
+          {srCaption}
+        </div>
       </a>
-      <div className="pswp-caption-content text-balance">
-        <h2 className="text-xl font-bold">{title}</h2>
-        <p>{caption || "Imagen sin texto Alternativo"}</p>
-      </div>
     </li>
   );
-}
+});
 
 export default CardPostJsx;
