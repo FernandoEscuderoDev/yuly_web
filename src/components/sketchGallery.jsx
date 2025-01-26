@@ -25,7 +25,7 @@ function GalleryPrueba() {
 
   const fetchPosts = useCallback(async () => {
     if (!hasMore || isLoading) return;
-    
+
     setIsLoading(true);
     try {
       const { data } = await loadQuery({
@@ -40,11 +40,15 @@ function GalleryPrueba() {
         }`,
       });
 
-      const processed = data.map(post => ({
+      const processed = data.map((post) => ({
         ...post,
         thumbnail: urlForImage(post.mainImage)
           .width(getThumbnailWidth())
-          .height(Math.round((getThumbnailWidth() * post.imageHeight) / post.imageWidth))
+          .height(
+            Math.round(
+              (getThumbnailWidth() * post.imageHeight) / post.imageWidth
+            )
+          )
           .format("webp")
           .quality(80)
           .url(),
@@ -53,10 +57,10 @@ function GalleryPrueba() {
           .height(Math.round((1920 * post.imageHeight) / post.imageWidth))
           .format("webp")
           .quality(90)
-          .url()
+          .url(),
       }));
 
-      setPosts(prev => [...prev, ...processed]);
+      setPosts((prev) => [...prev, ...processed]);
       setHasMore(data.length >= ITEMS_PER_PAGE);
     } catch (error) {
       console.error("Error loading posts:", error);
@@ -72,41 +76,42 @@ function GalleryPrueba() {
   // Lightbox initialization
   useEffect(() => {
     const lightbox = new PhotoSwipeLightbox({
-      gallery: '#my-gallery',
-      children: 'a',
-      pswpModule: () => import('photoswipe'),
+      gallery: "#my-gallery",
+      children: "a",
+      pswpModule: () => import("photoswipe"),
       ariaLabels: {
-        close: 'Cerrar ventana',
-        zoom: 'Zoom',
-        arrowLeft: 'Anterior',
-        arrowRight: 'Siguiente',
-        arrowUp: 'Cerrar',
-        arrowDown: 'Cerrar'
-      }
+        close: "Cerrar ventana",
+        zoom: "Zoom",
+        arrowLeft: "Anterior",
+        arrowRight: "Siguiente",
+        arrowUp: "Cerrar",
+        arrowDown: "Cerrar",
+      },
     });
 
     new PhotoSwipeDynamicCaption(lightbox, {
-      type: 'auto',
+      type: "auto",
       captionContent: (slide) => {
         const element = slide.data.element.parentElement;
-        const title = element.querySelector('.pswp-caption-title')?.textContent;
-        const caption = element.querySelector('.pswp-caption-text')?.textContent;
-        
+        const title = element.querySelector(".pswp-caption-title")?.textContent;
+        const caption =
+          element.querySelector(".pswp-caption-text")?.textContent;
+
         return `
-          ${title ? `<h2 class="text-xl font-bold mb-2">${title}</h2>` : ''}
-          ${caption ? `<p class="text-base">${caption}</p>` : ''}
+          ${title ? `<h2 class="text-xl font-bold mb-2">${title}</h2>` : ""}
+          ${caption ? `<p class="text-base">${caption}</p>` : ""}
         `;
-      }
+      },
     });
 
-    lightbox.on('beforeOpen', () => {
-      document.documentElement.style.overflow = 'hidden';
-      document.documentElement.setAttribute('aria-hidden', 'true');
+    lightbox.on("beforeOpen", () => {
+      document.documentElement.style.overflow = "hidden";
+      document.documentElement.setAttribute("aria-hidden", "true");
     });
 
-    lightbox.on('close', () => {
-      document.documentElement.style.overflow = '';
-      document.documentElement.removeAttribute('aria-hidden');
+    lightbox.on("close", () => {
+      document.documentElement.style.overflow = "";
+      document.documentElement.removeAttribute("aria-hidden");
     });
 
     lightbox.init();
@@ -115,7 +120,7 @@ function GalleryPrueba() {
 
   const handleLoadMore = () => {
     if (!isLoading) {
-      setPage(prev => prev + 1);
+      setPage((prev) => prev + 1);
     }
   };
 
@@ -125,10 +130,11 @@ function GalleryPrueba() {
         className="mx-auto flex-1 gap-4 columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6"
         id="my-gallery"
       >
-        {posts.map((post) => (
+        {posts.map((post, index) => (
           <CardPost
             key={post._id}
             {...post}
+            isPriority={index < 3} // Primeras 3 imágenes cargadas con prioridad
           />
         ))}
       </ul>
@@ -140,7 +146,7 @@ function GalleryPrueba() {
             disabled={isLoading}
             className="text-white hover:text-fuchsia-500 border border-white rounded-md p-2 transition-opacity disabled:opacity-50 w-40"
           >
-            {isLoading ? 'Loading...' : 'Show more'}
+            {isLoading ? "Loading..." : "Show more"}
           </button>
         </div>
       )}

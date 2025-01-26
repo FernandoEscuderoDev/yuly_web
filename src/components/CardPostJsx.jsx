@@ -7,37 +7,45 @@ const CardPostJsx = memo(({
   imageWidth,
   imageHeight,
   alt,
-  caption
+  caption,
+  isPriority // Nueva prop para imágenes críticas
 }) => {
   const altText = alt || caption || title || "Imagen de la galería";
   const srCaption = title || caption ? `${title} ${caption}` : altText;
   
-  // Generar diferentes tamaños para srcset
-  const generateSrcSet = (imageUrl) => {
-    const widths = [200, 300, 400, 500, 600, 800, 1000, 1200, 1400, 1600, 1920];
-    return widths
+  // Tamaños responsivos basados en columnas
+  const generateSrcSet = () => {
+    const breakpoints = {
+      '2xl': 600,
+      xl: 500,
+      lg: 400,
+      md: 300,
+      default: 200
+    };
+    
+    return Object.values(breakpoints)
       .map(width => {
         const height = Math.round((width * imageHeight) / imageWidth);
-        return `${urlForImage(imageUrl)
+        return `${urlForImage(mainImage)
           .width(width)
           .height(height)
           .format('webp')
-          .quality(80)} ${width}w`;
+          .quality(75)} ${width}w`;
       })
       .join(', ');
   };
 
-  // URL para la imagen full size
-  const fullImage = urlForImage(mainImage)
-    .width(1920)
+  // URL base para pre-carga
+  const baseImage = urlForImage(mainImage)
+    .width(400)
     .format('webp')
-    .quality(90)
+    .quality(80)
     .url();
 
   return (
     <li className="relative mb-4 break-inside-avoid group">
       <a
-        href={fullImage}
+        href={urlForImage(mainImage).width(1920).quality(90).url()}
         data-pswp-width={imageWidth}
         data-pswp-height={imageHeight}
         className="block overflow-hidden rounded-lg transition-shadow duration-300 hover:shadow-lg"
@@ -47,19 +55,15 @@ const CardPostJsx = memo(({
       >
         <div className="overflow-hidden rounded-lg">
           <img
-            src={urlForImage(mainImage)
-              .width(400)
-              .format('webp')
-              .quality(80)
-              .url()}
-            srcSet={generateSrcSet(mainImage)}
-            sizes="(max-width: 768px) 100vw,
-                   (max-width: 1024px) 50vw,
-                   (max-width: 1280px) 33vw,
-                   25vw"
+            src={baseImage}
+            srcSet={generateSrcSet()}
+            sizes="(max-width: 640px) 50vw,
+                   (max-width: 768px) 33vw,
+                   (max-width: 1024px) 25vw,
+                   20vw"
             alt={altText}
-            loading="lazy"
-            decoding="async"
+            loading={isPriority ? "eager" : "lazy"}
+            decoding={isPriority ? "sync" : "async"}
             className="w-full h-auto object-cover transition-transform duration-300 transform group-hover:scale-105"
             style={{
               aspectRatio: `${imageWidth}/${imageHeight}`,
