@@ -162,7 +162,7 @@ const { title } = Astro.props;
   // Función para actualizar todos los enlaces
   const updateShareLinks = () => {
     const currentUrl = window.location.href;
-    const encodedTitle = encodeURIComponent(document.title);
+    const encodedTitle = encodeURIComponent(document.title.toLocaleUpperCase());
     
     // Actualizar enlaces desktop
     document.getElementById('whatsappShare').href = `https://wa.me/?text=${encodedTitle} - ${encodeURIComponent(currentUrl)}`;
