@@ -67,7 +67,7 @@ const CardPostJsx = memo(({
             className="w-full h-auto object-cover transition-transform duration-300 transform group-hover:scale-105"
             style={{
               aspectRatio: `${imageWidth}/${imageHeight}`,
-              backgroundColor: '#f5f5f5'
+              backgroundColor: '#0f172a'
             }}
             aria-describedby={`desc-${title}`}
           />
