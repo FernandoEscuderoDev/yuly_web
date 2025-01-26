@@ -199,7 +199,7 @@ const { title } = Astro.props;
         const element = document.getElementById(id);
         if (element) {
           element.href = url(encodedTitle, currentUrl);
-          element.rel = 'noopener noreferrer nofollow'; // Mejora de seguridad
+          element.rel = 'noopener noreferrer nofollow';
         }
       });
     });
@@ -230,47 +230,60 @@ const { title } = Astro.props;
     }
   };
 
-  // Event listeners seguros
+  // Manejadores nombrados para poder removerlos
+  const closeMenuHandler = (e) => {
+    const menu = document.querySelector(SELECTORS.SHARE_MENU_MOBILE);
+    if (!menu.classList.contains('hidden') && 
+        !e.target.closest(SELECTORS.SHARE_MENU_MOBILE) && 
+        !e.target.closest(SELECTORS.SHARE_BUTTON_MOBILE)) {
+      toggleMobileMenu();
+    }
+  };
+
+  const escapeHandler = (e) => {
+    if (e.key === 'Escape' && !document.querySelector(SELECTORS.SHARE_MENU_MOBILE).classList.contains('hidden')) {
+      toggleMobileMenu();
+    }
+  };
+
+  // Limpieza de event listeners
+  const cleanup = () => {
+    window.removeEventListener('popstate', updateShareLinks);
+    document.removeEventListener('click', closeMenuHandler);
+    document.removeEventListener('keydown', escapeHandler);
+  };
+
+  // Inicialización de event listeners
   const initEventListeners = () => {
     const shareButton = document.querySelector(SELECTORS.SHARE_BUTTON_MOBILE);
     const copyButtons = ['copyButtonDesktop', 'copyButtonMobile'];
     
-    // Menú móvil
     shareButton?.addEventListener('click', (e) => {
       e.stopPropagation();
       toggleMobileMenu();
     });
 
-    // Botones de copiado
     copyButtons.forEach(id => {
       document.getElementById(id)?.addEventListener('click', copyHandler);
     });
 
-    // Cierre seguro del menú
-    document.addEventListener('click', (e) => {
-      const menu = document.querySelector(SELECTORS.SHARE_MENU_MOBILE);
-      if (!menu.classList.contains('hidden') && 
-          !e.target.closest(SELECTORS.SHARE_MENU_MOBILE) && 
-          !e.target.closest(SELECTORS.SHARE_BUTTON_MOBILE)) {
-        toggleMobileMenu();
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !document.querySelector(SELECTORS.SHARE_MENU_MOBILE).classList.contains('hidden')) {
-        toggleMobileMenu();
-      }
-    });
+    document.addEventListener('click', closeMenuHandler);
+    document.addEventListener('keydown', escapeHandler);
   };
 
-  // Inicialización segura
+  // Función de inicialización principal
   const init = () => {
+    cleanup();
     updateShareLinks();
     window.addEventListener('popstate', updateShareLinks);
     initEventListeners();
   };
 
-  // Ejecución controlada
+  // Manejar View Transitions de Astro
+  document.addEventListener("astro:after-swap", init);
+  document.addEventListener("astro:page-load", init);
+
+  // Inicialización inicial
   if (document.readyState === 'complete') {
     init();
   } else {
