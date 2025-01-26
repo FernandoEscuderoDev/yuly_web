@@ -154,85 +154,126 @@ const { title } = Astro.props;
   </div>
 </div>
 
-<div id="copyNotification" class="hidden fixed bottom-6 right-6 px-4 py-2 bg-fuchsia-900/95 text-fuchsia-100 rounded-lg text-sm backdrop-blur-lg border border-fuchsia-500/30 shadow-lg">
+<div id="copyNotification" class="hidden fixed top-0 right-6 px-4 py-2 bg-fuchsia-900/95 text-fuchsia-100 rounded-lg text-sm backdrop-blur-lg border border-fuchsia-500/30 shadow-lg">
   Enlace copiado al portapapeles ✨
 </div>
 
 <script is:inline>
-  // Función para actualizar todos los enlaces
-  const updateShareLinks = () => {
-    const currentUrl = window.location.href;
-    const encodedTitle = encodeURIComponent(document.title.toLocaleUpperCase());
-    
-    // Actualizar enlaces desktop
-    document.getElementById('whatsappShare').href = `https://wa.me/?text=${encodedTitle} - ${encodeURIComponent(currentUrl)}`;
-    document.getElementById('twitterShare').href = `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodeURIComponent(currentUrl)}`;
-    document.getElementById('facebookShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
-    document.getElementById('linkedinShare').href = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(currentUrl)}&title=${encodedTitle}`;
-    
-    // Actualizar enlaces mobile
-    document.getElementById('whatsappShareMobile').href = `https://wa.me/?text=${encodedTitle} - ${encodeURIComponent(currentUrl)}`;
-    document.getElementById('twitterShareMobile').href = `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodeURIComponent(currentUrl)}`;
-    document.getElementById('facebookShareMobile').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
-    document.getElementById('linkedinShareMobile').href = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(currentUrl)}&title=${encodedTitle}`;
+  // Constantes reutilizables
+  const SELECTORS = {
+    COPY_NOTIFICATION: '#copyNotification',
+    SHARE_BUTTON_MOBILE: '#shareButtonMobile',
+    SHARE_MENU_MOBILE: '#shareMenuMobile'
   };
 
-  // Actualizar al cargar
-  updateShareLinks();
-  
-  // Actualizar si cambia la URL
-  window.addEventListener('popstate', updateShareLinks);
+  // Configuración de plataformas
+  const PLATFORMS = [
+    {
+      ids: ['whatsappShare', 'whatsappShareMobile'],
+      url: (title, url) => `https://wa.me/?text=${title} - ${url}`
+    },
+    {
+      ids: ['twitterShare', 'twitterShareMobile'],
+      url: (title, url) => `https://twitter.com/intent/tweet?text=${title}&url=${url}`
+    },
+    {
+      ids: ['facebookShare', 'facebookShareMobile'],
+      url: (title, url) => `https://www.facebook.com/sharer/sharer.php?u=${url}`
+    },
+    {
+      ids: ['linkedinShare', 'linkedinShareMobile'],
+      url: (title, url) => `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}`
+    }
+  ];
 
-  // Sistema de copiado
+  // Función segura para codificar
+  const safeEncode = (str) => encodeURIComponent(str).replace(/[!'()*]/g, (c) => `%${c.charCodeAt(0).toString(16)}`);
+
+  // Actualizar enlaces de forma segura
+  const updateShareLinks = () => {
+    const currentUrl = safeEncode(window.location.href);
+    const encodedTitle = safeEncode(document.title.toUpperCase());
+
+    PLATFORMS.forEach(({ ids, url }) => {
+      ids.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.href = url(encodedTitle, currentUrl);
+          element.rel = 'noopener noreferrer nofollow'; // Mejora de seguridad
+        }
+      });
+    });
+  };
+
+  // Sistema de copiado seguro
   const copyHandler = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      document.getElementById('copyNotification').classList.remove('hidden');
-      setTimeout(() => {
-        document.getElementById('copyNotification').classList.add('hidden');
-      }, 2000);
+      const notification = document.querySelector(SELECTORS.COPY_NOTIFICATION);
+      notification.classList.remove('hidden');
+      setTimeout(() => notification.classList.add('hidden'), 2000);
     } catch (err) {
-      console.error("Error al copiar:", err);
+      console.error("Error al copiar:", err.toString());
     }
   };
 
-  // Manejo del menú mobile
-  const shareButtonMobile = document.getElementById('shareButtonMobile');
-  const shareMenuMobile = document.getElementById('shareMenuMobile');
-
+  // Gestión del menú móvil
   const toggleMobileMenu = () => {
-    shareMenuMobile.classList.toggle('hidden');
-    shareMenuMobile.classList.toggle('opacity-0');
-    shareMenuMobile.classList.toggle('translate-y-4');
+    const menu = document.querySelector(SELECTORS.SHARE_MENU_MOBILE);
+    menu.classList.toggle('hidden');
+    menu.classList.toggle('opacity-0');
+    menu.classList.toggle('translate-y-4');
     
-    if (shareMenuMobile.classList.contains('hidden')) {
-      shareMenuMobile.style.pointerEvents = 'none';
-    } else {
-      shareMenuMobile.style.pointerEvents = 'auto';
-      shareMenuMobile.classList.add('opacity-100', 'translate-y-0');
+    menu.style.pointerEvents = menu.classList.contains('hidden') ? 'none' : 'auto';
+    if (!menu.classList.contains('hidden')) {
+      menu.classList.add('opacity-100', 'translate-y-0');
     }
   };
 
-  // Event listeners
-  shareButtonMobile.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleMobileMenu();
-  });
+  // Event listeners seguros
+  const initEventListeners = () => {
+    const shareButton = document.querySelector(SELECTORS.SHARE_BUTTON_MOBILE);
+    const copyButtons = ['copyButtonDesktop', 'copyButtonMobile'];
+    
+    // Menú móvil
+    shareButton?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMobileMenu();
+    });
 
-  document.getElementById('copyButtonDesktop').addEventListener('click', copyHandler);
-  document.getElementById('copyButtonMobile').addEventListener('click', copyHandler);
+    // Botones de copiado
+    copyButtons.forEach(id => {
+      document.getElementById(id)?.addEventListener('click', copyHandler);
+    });
 
-  document.addEventListener('click', (e) => {
-    if (!shareButtonMobile.contains(e.target) && !shareMenuMobile.contains(e.target)) {
-      if (!shareMenuMobile.classList.contains('hidden')) {
+    // Cierre seguro del menú
+    document.addEventListener('click', (e) => {
+      const menu = document.querySelector(SELECTORS.SHARE_MENU_MOBILE);
+      if (!menu.classList.contains('hidden') && 
+          !e.target.closest(SELECTORS.SHARE_MENU_MOBILE) && 
+          !e.target.closest(SELECTORS.SHARE_BUTTON_MOBILE)) {
         toggleMobileMenu();
       }
-    }
-  });
+    });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !shareMenuMobile.classList.contains('hidden')) {
-      toggleMobileMenu();
-    }
-  });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !document.querySelector(SELECTORS.SHARE_MENU_MOBILE).classList.contains('hidden')) {
+        toggleMobileMenu();
+      }
+    });
+  };
+
+  // Inicialización segura
+  const init = () => {
+    updateShareLinks();
+    window.addEventListener('popstate', updateShareLinks);
+    initEventListeners();
+  };
+
+  // Ejecución controlada
+  if (document.readyState === 'complete') {
+    init();
+  } else {
+    window.addEventListener('DOMContentLoaded', init);
+  }
 </script>

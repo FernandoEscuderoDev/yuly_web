@@ -91,7 +91,7 @@ export default function PostSection() {
           className="relative bg-white shadow-lg rounded-xl overflow-hidden group hover:shadow-xl transition-all duration-300"
         >
           <a
-            href={`/post/${post.slug}`}
+            href={`/blog/${post.slug}`}
             className="block h-full"
           >
             {/* Contenedor de imagen con relación de aspecto */}

@@ -60,7 +60,7 @@ const PostCard = React.memo(({ post }) => {
       className="group bg-fuchsia-700/20 backdrop-blur-sm rounded-xl overflow-hidden 
         shadow-lg hover:shadow-fuchsia-500/20 transition-shadow duration-300"
     >
-      <a href={`/post/${sanitizedSlug}`} className="block h-full">
+      <a href={`/blog/${sanitizedSlug}`} className="block h-full">
         {post.mainImage && (
           <div className="relative w-full aspect-video overflow-hidden">
             <img

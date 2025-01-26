@@ -49,11 +49,11 @@ const publishDate = new Date(post.publishedAt).toLocaleDateString("es-ES", {
 });
 ---
 
-<Layout title={`${post.title} | Yuly Blog`}>
+<Layout title={`Yuly Blog | ${post.title}`}>
   <article class="min-h-screen bg-fuchsia-950">
     {/* Botón flotante mejorado */}
     <a
-      href="/post"
+      href="/blog"
       class="fixed z-50 top-24 left-6 group flex items-center gap-2 px-4 py-2 transition-all duration-300 hover:pl-3 hover:pr-5 bg-black/80 backdrop-blur-md border border-fuchsia-500/40 rounded-full shadow-lg shadow-fuchsia-900/20 hover:shadow-fuchsia-900/40 hover:border-fuchsia-400/60"
     >
       <span
