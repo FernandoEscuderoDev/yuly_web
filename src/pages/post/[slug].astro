@@ -4,6 +4,7 @@ import { loadQuery } from "./../../sanity/lib/load-query";
 import PortableText from "./../../components/PortableText.astro";
 import Layout from "./../../layouts/Layout.astro";
 import PortableTextImage from "../../components/PortableTextImage.astro";
+import SharePost from "../../components/SharePost.astro";
 
 // Obtener todas las rutas de posts estáticas
 export async function getStaticPaths() {
@@ -52,46 +53,70 @@ const publishDate = new Date(post.publishedAt).toLocaleDateString("es-ES", {
   <article class="min-h-screen bg-fuchsia-950">
     {/* Botón flotante mejorado */}
     <a
-  href="/post"
-  class="fixed z-50 top-24 left-6 group flex items-center gap-2 px-4 py-2 transition-all duration-300 hover:pl-3 hover:pr-5 bg-black/80 backdrop-blur-md border border-fuchsia-500/40 rounded-full shadow-lg shadow-fuchsia-900/20 hover:shadow-fuchsia-900/40 hover:border-fuchsia-400/60"
->
-  <span class="text-fuchsia-400 group-hover:text-fuchsia-300 transition-colors text-lg">←</span>
-  <span class="text-sm font-medium text-fuchsia-300/90 group-hover:text-fuchsia-200 transition-colors">
-    Volver al blog
-  </span>
-</a>
+      href="/post"
+      class="fixed z-50 top-24 left-6 group flex items-center gap-2 px-4 py-2 transition-all duration-300 hover:pl-3 hover:pr-5 bg-black/80 backdrop-blur-md border border-fuchsia-500/40 rounded-full shadow-lg shadow-fuchsia-900/20 hover:shadow-fuchsia-900/40 hover:border-fuchsia-400/60"
+    >
+      <span
+        class="text-fuchsia-400 group-hover:text-fuchsia-300 transition-colors text-lg"
+        >←</span
+      >
+      <span
+        class="text-sm font-medium text-fuchsia-300/90 group-hover:text-fuchsia-200 transition-colors"
+      >
+        Volver al blog
+      </span>
+    </a>
 
     {/* Sección Hero */}
-    {post.mainImage && (
-      <div class="relative h-[400px] md:h-[70vh] overflow-hidden">
-        <PortableTextImage
-          asset={post.mainImage.asset}
-          alt={post.mainImage.alt || post.title}
-          tamanio={1600}
-          imageHeight={post.imageHeight}
-          imageWidth={post.imageWidth}
-          classImg="w-full h-full object-cover transform transition-transform duration-500 hover:scale-105"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-fuchsia-950 via-transparent to-transparent" />
-      </div>
-    )}
+    {
+      post.mainImage && (
+        <div class="relative h-[400px] md:h-[70vh] overflow-hidden">
+          <PortableTextImage
+            asset={post.mainImage.asset}
+            alt={post.mainImage.alt || post.title}
+            tamanio={1600}
+            imageHeight={post.imageHeight}
+            imageWidth={post.imageWidth}
+            classImg="w-full h-full object-cover transform transition-transform duration-500 hover:scale-105"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-fuchsia-950 via-transparent to-transparent" />
+        </div>
+      )
+    }
 
     {/* Contenido principal */}
-    <div class="relative z-10 md:max-w-2xl xl:max-w-4xl mx-auto px-4 md:px-6 -mt-16 md:-mt-48 py-8">
+    <div
+      class="relative z-10 md:max-w-2xl xl:max-w-4xl mx-auto px-4 md:px-6 -mt-16 md:-mt-48 py-8"
+    >
       {/* Tarjeta flotante con título */}
-      <div class="bg-stone-500/10 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-fuchsia-500/20 shadow-xl shadow-fuchsia-900/10">
+      <div
+        class="bg-stone-500/10 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-fuchsia-500/20 shadow-xl shadow-fuchsia-900/10"
+      >
         <header class="space-y-4 border-b border-fuchsia-500/20 pb-6 mb-6">
-          <h1 class="text-4xl capitalize md:text-5xl font-bold bg-gradient-to-r from-fuchsia-600 to-purple-300 bg-clip-text text-transparent">
+          <h1
+            class="text-4xl capitalize md:text-5xl font-bold bg-gradient-to-r from-fuchsia-600 to-purple-300 bg-clip-text text-transparent"
+          >
             {post.title}
           </h1>
           <div class="flex items-center gap-3 text-fuchsia-300/90">
-            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            <svg
+              class="w-5 h-5 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
             </svg>
             <time datetime={post.publishedAt} class="font-medium">
               {publishDate}
             </time>
           </div>
+          <SharePost title={post.title} url={Astro.url.href} />
         </header>
 
         {/* Contenido del post */}
@@ -171,7 +196,7 @@ const publishDate = new Date(post.publishedAt).toLocaleDateString("es-ES", {
   }
 
   .post-content ul li::before {
-    content: '▹';
+    content: "▹";
     position: absolute;
     left: 0;
     color: #ff00cc;
@@ -205,7 +230,7 @@ const publishDate = new Date(post.publishedAt).toLocaleDateString("es-ES", {
   }
 
   .post-content blockquote::before {
-    content: '“';
+    content: "“";
     position: absolute;
     top: -1.5rem;
     left: -0.5rem;
@@ -225,7 +250,7 @@ const publishDate = new Date(post.publishedAt).toLocaleDateString("es-ES", {
 
   /* Código */
   .post-content code {
-    font-family: 'Courier New', monospace;
+    font-family: "Courier New", monospace;
     background: #1e1e2f;
     color: #c3e88d;
     padding: 0.25rem 0.5rem;
