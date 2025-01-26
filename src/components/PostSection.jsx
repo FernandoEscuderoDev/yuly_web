@@ -64,7 +64,7 @@ export default function PostSection() {
       className="w-full mx-auto text-center text-white p-4 pt-0"
       style={{ maxWidth: "100vw" }}
     >
-      <h2 className="text-3xl mb-4 font-semibold">Post Destacados</h2>
+      <h2 className="text-3xl my-4 font-semibold">Post Destacados</h2>
       <Swiper
         className="h-52"
         slidesPerView={1}

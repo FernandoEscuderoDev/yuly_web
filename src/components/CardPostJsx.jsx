@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
+import { urlForImage } from '../sanity/lib/urlForImage';
 
 const CardPostJsx = memo(({
   title,
-  thumbnail,
-  fullImage,
+  mainImage,
   imageWidth,
   imageHeight,
   alt,
@@ -11,6 +11,28 @@ const CardPostJsx = memo(({
 }) => {
   const altText = alt || caption || title || "Imagen de la galería";
   const srCaption = title || caption ? `${title} ${caption}` : altText;
+  
+  // Generar diferentes tamaños para srcset
+  const generateSrcSet = (imageUrl) => {
+    const widths = [200, 300, 400, 500, 600, 800, 1000, 1200, 1400, 1600, 1920];
+    return widths
+      .map(width => {
+        const height = Math.round((width * imageHeight) / imageWidth);
+        return `${urlForImage(imageUrl)
+          .width(width)
+          .height(height)
+          .format('webp')
+          .quality(80)} ${width}w`;
+      })
+      .join(', ');
+  };
+
+  // URL para la imagen full size
+  const fullImage = urlForImage(mainImage)
+    .width(1920)
+    .format('webp')
+    .quality(90)
+    .url();
 
   return (
     <li className="relative mb-4 break-inside-avoid group">
@@ -25,7 +47,16 @@ const CardPostJsx = memo(({
       >
         <div className="overflow-hidden rounded-lg">
           <img
-            src={thumbnail}
+            src={urlForImage(mainImage)
+              .width(400)
+              .format('webp')
+              .quality(80)
+              .url()}
+            srcSet={generateSrcSet(mainImage)}
+            sizes="(max-width: 768px) 100vw,
+                   (max-width: 1024px) 50vw,
+                   (max-width: 1280px) 33vw,
+                   25vw"
             alt={altText}
             loading="lazy"
             decoding="async"

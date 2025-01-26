@@ -26,7 +26,7 @@ const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} });
 <Layout title="Blog">
     <BackgroundBlog />
   <div>
-    <PostGrid posts={posts} client:load />
     <PostSection client:load />
+    <PostGrid posts={posts} client:load />
   </div>
 </Layout>

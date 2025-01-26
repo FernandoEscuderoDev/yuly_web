@@ -140,7 +140,7 @@ function GalleryPrueba() {
             disabled={isLoading}
             className="text-white hover:text-fuchsia-500 border border-white rounded-md p-2 transition-opacity disabled:opacity-50 w-40"
           >
-            {isLoading ? 'Cargando...' : 'Mostrar más'}
+            {isLoading ? 'Loading...' : 'Show more'}
           </button>
         </div>
       )}
