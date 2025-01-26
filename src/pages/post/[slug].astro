@@ -116,7 +116,7 @@ const publishDate = new Date(post.publishedAt).toLocaleDateString("es-ES", {
               {publishDate}
             </time>
           </div>
-          <SharePost title={post.title} url={Astro.url.href} />
+          <SharePost title={post.title}/>
         </header>
 
         {/* Contenido del post */}
