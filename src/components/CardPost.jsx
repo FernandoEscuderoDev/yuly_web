@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { urlForImage } from '../sanity/lib/urlForImage';
 
-const CardPostJsx = memo(({
+const CardPost = memo(({
   title,
   mainImage,
   imageWidth,
@@ -88,4 +88,4 @@ const CardPostJsx = memo(({
   );
 });
 
-export default CardPostJsx;
+export default CardPost;

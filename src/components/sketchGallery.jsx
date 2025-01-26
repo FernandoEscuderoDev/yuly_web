@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import CardPost from "./CardPostJsx.jsx";
+import CardPost from "./CardPost.jsx";
 import "photoswipe/style.css";
 import "photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css";
 import { loadQuery } from "../sanity/lib/load-query";

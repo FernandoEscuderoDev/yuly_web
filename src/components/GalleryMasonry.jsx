@@ -1,13 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
-import CardPost from "./CardPostJsx.jsx";
+import CardPost from "./CardPost.jsx";
 import "photoswipe/style.css";
 import "photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css";
-import { loadQuery } from "../sanity/lib/load-query";
+import { loadQuery } from "../sanity/lib/load-query.js";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import PhotoSwipeDynamicCaption from "photoswipe-dynamic-caption-plugin";
 import { urlForImage } from "../sanity/lib/urlForImage.js";
 
-function GalleryPrueba() {
+function GalleryMasonry() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -154,4 +154,4 @@ function GalleryPrueba() {
   );
 }
 
-export default GalleryPrueba;
+export default GalleryMasonry;
