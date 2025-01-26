@@ -2,7 +2,7 @@
 export const prerender = true;
 import { loadQuery } from "./../../sanity/lib/load-query";
 import PortableText from "./../../components/PortableText.astro";
-import Layout from "./../../layouts/Layout.astro"; 
+import Layout from "./../../layouts/Layout.astro";
 import PortableTextImage from "../../components/PortableTextImage.astro";
 
 // Obtener todas las rutas de posts estáticas
@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 
   return posts.map(({ slug, title }) => ({
     params: { slug },
-    props: { title }
+    props: { title },
   }));
 }
 
@@ -41,62 +41,224 @@ const { data: post } = await loadQuery({
 });
 
 // Formatear fecha
-const publishDate = new Date(post.publishedAt).toLocaleDateString('es-ES', {
-  year: 'numeric',
-  month: 'long', 
-  day: 'numeric'
+const publishDate = new Date(post.publishedAt).toLocaleDateString("es-ES", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
 });
 ---
 
 <Layout title={`${post.title} | Yuly Blog`}>
-  <article class="container mx-auto max-w-3xl text-white">
-    {/* Botón fijo para volver */}
-    <nav class="sticky top-0 z-10 backdrop-blur-md bg-black/50 border-b border-fuchsia-500/20">
-      <a
-        href="/post"
-        class="block px-6 py-4 text-xl font-bold hover:text-fuchsia-400 transition-colors"
-      >
-        &larr; Volver a posts
-      </a>
-    </nav>
+  <article class="min-h-screen bg-black">
+    {/* Botón flotante mejorado */}
+    <a
+  href="/post"
+  class="fixed z-50 top-24 left-6 group flex items-center gap-2 px-4 py-2 transition-all duration-300 hover:pl-3 hover:pr-5 bg-black/80 backdrop-blur-md border border-fuchsia-500/40 rounded-full shadow-lg shadow-fuchsia-900/20 hover:shadow-fuchsia-900/40 hover:border-fuchsia-400/60"
+>
+  <span class="text-fuchsia-400 group-hover:text-fuchsia-300 transition-colors text-lg">←</span>
+  <span class="text-sm font-medium text-fuchsia-300/90 group-hover:text-fuchsia-200 transition-colors">
+    Volver al blog
+  </span>
+</a>
 
-    {/* Hero image */}
+    {/* Sección Hero */}
     {post.mainImage && (
-      <div class="relative h-[50vh] md:h-[60vh]">
+      <div class="relative h-[400px] md:h-[70vh] overflow-hidden">
         <PortableTextImage
           asset={post.mainImage.asset}
           alt={post.mainImage.alt || post.title}
-          tamanio={1200}
+          tamanio={1600}
           imageHeight={post.imageHeight}
           imageWidth={post.imageWidth}
-          classImg="w-full h-full object-cover"
+          classImg="w-full h-full object-cover transform transition-transform duration-500 hover:scale-105"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
       </div>
     )}
 
-    {/* Contenido */}
-    <div class="p-6 md:p-8 space-y-6">
-      <header class="space-y-2">
-        <h1 class="text-4xl md:text-5xl font-bold capitalize">{post.title}</h1>
-        {post.description && (
-          <p class="text-xl text-gray-300 font-light">{post.description}</p>
-        )}
-        <time class="block text-sm text-gray-400" datetime={post.publishedAt}>
-          Publicado el {publishDate}
-        </time>
-      </header>
+    {/* Contenido principal */}
+    <div class="relative z-10 max-w-3xl mx-auto px-4 md:px-6 -mt-16 md:-mt-48 py-8">
+      {/* Tarjeta flotante con título */}
+      <div class="bg-black/80 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-fuchsia-500/20 shadow-xl shadow-fuchsia-900/10">
+        <header class="space-y-4 border-b border-fuchsia-500/20 pb-6 mb-6">
+          <h1 class="text-4xl capitalize md:text-5xl font-bold bg-gradient-to-r from-fuchsia-400 to-pink-500 bg-clip-text text-transparent">
+            {post.title}
+          </h1>
+          <div class="flex items-center gap-3 text-fuchsia-300/90">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <time datetime={post.publishedAt} class="font-medium">
+              {publishDate}
+            </time>
+          </div>
+        </header>
 
-      <div class="prose prose-invert prose-lg max-w-none 
-                  prose-headings:text-white
-                  prose-p:text-gray-300
-                  prose-a:text-fuchsia-400 prose-a:no-underline hover:prose-a:text-fuchsia-300
-                  prose-strong:text-white
-                  prose-code:text-white
-                  prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800
-                  prose-blockquote:text-gray-400 prose-blockquote:border-fuchsia-500">
-        <PortableText portableText={post.body} />
+        {/* Contenido del post */}
+        <div class="post-content space-y-8">
+          <PortableText portableText={post.body} />
+        </div>
       </div>
     </div>
   </article>
 </Layout>
+
+<style is:global>
+  /* Contenedor principal */
+  .post-content {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #e5e7eb;
+  }
+
+  /* Texto normal */
+  .post-content p {
+    margin-bottom: 1.5rem;
+    max-width: 65ch;
+  }
+
+  /* Encabezados */
+  .post-content h1 {
+    font-size: 2.5rem;
+    color: #e5e7eb;
+    margin: 2.5rem 0 1.5rem;
+  }
+
+  .post-content h2 {
+    font-size: 2rem;
+    color: #e5e7eb;
+    margin: 2rem 0 1rem;
+  }
+
+  .post-content h3 {
+    font-size: 1.75rem;
+    color: #e5e7eb;
+    margin: 1.75rem 0 1rem;
+    font-weight: 500;
+  }
+
+  .post-content h4 {
+    font-size: 1.5rem;
+    color: #e5e7eb;
+    margin: 1.5rem 0 1rem;
+    font-style: italic;
+  }
+
+  /* Negritas y cursivas */
+  .post-content strong {
+    color: #ff5cde;
+    font-weight: 600;
+    position: relative;
+    padding: 0 0.2rem;
+  }
+
+  .post-content strong::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff5cde, #ff00cc);
+  }
+
+  .post-content em {
+    color: #86efac;
+    font-style: italic;
+    text-shadow: 0 0 8px rgba(134, 239, 172, 0.2);
+  }
+
+  /* Listas */
+  .post-content ul {
+    list-style: none;
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .post-content ul li {
+    position: relative;
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+  }
+
+  .post-content ul li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: #ff00cc;
+  }
+
+  /* Enlaces */
+  .post-content a {
+    color: #ffdfff;
+    background: linear-gradient(90deg, #ff00ff33, #ff00ff11);
+    text-decoration: none;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ff00ff33;
+    transition: all 0.3s ease;
+  }
+
+  .post-content a:hover {
+    background: #ff00ff1a;
+    box-shadow: 0 0 12px #ff00ff40;
+    transform: translateY(-1px);
+  }
+
+  /* Citas */
+  .post-content blockquote {
+    border-left: 3px solid #ff00cc;
+    margin: 2rem 0;
+    padding: 1rem 1.5rem;
+    background: #1a001533;
+    position: relative;
+    font-style: italic;
+  }
+
+  .post-content blockquote::before {
+    content: '“';
+    position: absolute;
+    top: -1.5rem;
+    left: -0.5rem;
+    font-size: 4rem;
+    color: #ff00cc40;
+    font-family: serif;
+  }
+
+  /* Líneas divisorias */
+  .post-content hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, #ff00cc00, #ff00cc, #ff00cc00);
+    margin: 3rem auto;
+    width: 50%;
+  }
+
+  /* Código */
+  .post-content code {
+    font-family: 'Courier New', monospace;
+    background: #1e1e2f;
+    color: #c3e88d;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #3a3f5c;
+    font-size: 0.9em;
+  }
+
+  .post-content pre {
+    background: #1a0015 !important;
+    padding: 1.5rem !important;
+    border-radius: 0.5rem;
+    border: 1px solid #ff00cc33;
+    margin: 2rem 0 !important;
+    overflow-x: auto;
+  }
+
+  .post-content pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+</style>

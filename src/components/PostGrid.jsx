@@ -4,7 +4,6 @@ import { urlForImage } from "../sanity/lib/urlForImage";
 const POSTS_PER_PAGE = 6;
 const VISIBLE_PAGES = 5;
 
-// Componente de paginación memoizado
 const PaginationButton = React.memo(({ pageNumber, currentPage, onClick }) => (
   <button
     onClick={onClick}
@@ -20,7 +19,6 @@ const PaginationButton = React.memo(({ pageNumber, currentPage, onClick }) => (
   </button>
 ));
 
-// Función de formateo de fecha optimizada
 const formatDate = (isoDate) => {
   if (!isoDate) return "Fecha no disponible";
   try {
@@ -33,12 +31,10 @@ const formatDate = (isoDate) => {
   }
 };
 
-// Componente de tarjeta optimizado
 const PostCard = React.memo(({ post }) => {
   const ref = useRef();
   const [isVisible, setIsVisible] = useState(false);
 
-  // Intersection Observer para lazy loading
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -64,24 +60,32 @@ const PostCard = React.memo(({ post }) => {
       className="group bg-fuchsia-700/20 backdrop-blur-sm rounded-xl overflow-hidden 
         shadow-lg hover:shadow-fuchsia-500/20 transition-shadow duration-300"
     >
-      <a href={`/post/${sanitizedSlug}`} className="block">
+      <a href={`/post/${sanitizedSlug}`} className="block h-full">
         {post.mainImage && (
-          <div className="relative overflow-hidden">
+          <div className="relative w-full aspect-video overflow-hidden">
             <img
               src={urlForImage(post.mainImage)
-                .width(600)
-                .height(600)
-                .quality(50)
+                .width(1200)
+                .height(630)
+                .fit('crop')
+                .crop('focalpoint')
+                .quality(80)
                 .auto('format')
                 .url()}
               alt={post.alt || "Imagen del artículo"}
-              className="w-full h-64 object-cover transition-transform duration-300 
-                       group-hover:scale-105"
+              className="w-full h-full object-cover object-center transition-transform 
+                       duration-300 group-hover:scale-105"
               loading="lazy"
               decoding="async"
+              style={{
+                position: 'absolute',
+                height: '100%',
+                width: '100%',
+                inset: 0
+              }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent 
-                          opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent 
+                          to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
           </div>
         )}
         <div className="p-5 space-y-3">
@@ -98,12 +102,10 @@ const PostCard = React.memo(({ post }) => {
   );
 }, (prev, next) => prev.post._id === next.post._id);
 
-// Componente principal
 const PostGrid = ({ posts = [] }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const timeoutRef = useRef();
   
-  // Cálculos memoizados
   const { paginatedPosts, totalPages, startPage, endPage } = useMemo(() => {
     const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
     const start = (currentPage - 1) * POSTS_PER_PAGE;
@@ -120,7 +122,6 @@ const PostGrid = ({ posts = [] }) => {
     };
   }, [posts, currentPage]);
 
-  // Throttle manual para paginación
   const handlePageChange = useCallback((pageNumber) => {
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
@@ -139,14 +140,14 @@ const PostGrid = ({ posts = [] }) => {
 
   return (
     <div className="px-4 md:px-8 py-4 pb-0">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {paginatedPosts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
       </div>
 
       {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-3 my-4">
+        <div className="flex justify-center items-center gap-3 my-8">
           {Array.from({ length: endPage - startPage + 1 }).map((_, i) => (
             <PaginationButton
               key={startPage + i}

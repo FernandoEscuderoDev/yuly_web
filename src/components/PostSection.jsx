@@ -61,10 +61,10 @@ export default function PostSection() {
 
   return (
     <div
-      className="w-full mx-auto text-center text-white p-4 pt-0"
+      className="w-full mx-auto text-center text-white p-4 pb-2"
       style={{ maxWidth: "100vw" }}
     >
-      <h2 className="text-3xl my-4 font-semibold">Post Destacados</h2>
+      <h2 className="text-3xl mb-4 font-semibold">Post Destacados</h2>
       <Swiper
         className="h-52"
         slidesPerView={1}
@@ -87,30 +87,41 @@ export default function PostSection() {
       >
         {postsDestacados.map((post) => (
           <SwiperSlide
-            key={post._id}
-            className="relative bg-white text-white shadow-lg rounded-lg overflow-hidden group"
+          key={post._id}
+          className="relative bg-white shadow-lg rounded-xl overflow-hidden group hover:shadow-xl transition-all duration-300"
+        >
+          <a
+            href={`/post/${post.slug}`}
+            className="block h-full"
           >
-            <a
-              href={`/post/${post.slug}`}
-              className="hover:underline"
-            >
+            {/* Contenedor de imagen con relación de aspecto */}
+            <div className="relative aspect-video overflow-hidden">
               <img
                 src={urlForImage(post.mainImage)
-                  .width(800)
-                  .height(900)
-                  .quality(20)
-                  .format("webp")
+                  .width(1200)
+                  .height(675) // 16:9 ratio (1200x675)
+                  .fit('crop')
+                  .crop('focalpoint')
+                  .quality(80)
+                  .auto('format')
                   .url()}
-                alt={post.altText || `Imagen del post ${post.title}`}
-                className="w-full h-full object-top object-cover rounded-lg transform group-hover:scale-110 transition-transform duration-300"
+                alt={post.altText || post.title}
+                className="w-full h-full object-cover absolute inset-0 transform transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
               />
-              <div className="p-4 absolute bottom-0 left-0 w-full bg-fuchsia-900 bg-opacity-75 group-hover:scale-105 transition-transform duration-300">
-                <h3 className="text-lg font-semibold capitalize">
-                  {post.title}
-                </h3>
-              </div>
-            </a>
-          </SwiperSlide>
+            </div>
+        
+            {/* Overlay de texto mejorado */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 flex flex-col justify-end">
+              <h3 className="text-white text-lg md:text-xl font-bold capitalize leading-tight transition-colors duration-300 group-hover:text-fuchsia-400">
+                {post.title}
+              </h3>
+              
+              {/* Efecto hover */}
+              <div className="absolute inset-0 rounded-xl transition-all duration-300 pointer-events-none" />
+            </div>
+          </a>
+        </SwiperSlide>
         ))}
       </Swiper>
     </div>
