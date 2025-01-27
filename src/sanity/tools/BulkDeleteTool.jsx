@@ -159,7 +159,6 @@ const BulkDeleteTool = () => {
                   )}
                   <Text
                     style={{
-                      backgroundColor: "red",
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
                     }}
