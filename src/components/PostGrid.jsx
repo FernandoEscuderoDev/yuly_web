@@ -1,3 +1,4 @@
+export const prerender = false;
 import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { urlForImage } from "../sanity/lib/urlForImage";
 
