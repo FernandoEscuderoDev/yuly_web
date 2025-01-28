@@ -5,13 +5,21 @@ import PortableTextImage from "../components/PortableTextImage.astro";
 import Layout from "../layouts/Layout.astro";
 import { loadQuery } from "../sanity/lib/load-query";
 
+// SEO Configuration
+const seoTitle = "Yuly VP | Biography";
+const seoDescription =
+  "Professional background and artistic philosophy of Yuly VP. Learn about techniques, inspirations, and career milestones in digital and traditional art.";
+const seoImage = "/social-about.webp";
+
+// Data loading
 const { data: aboutMe } = await loadQuery({
   query: `*[_type == "aboutMe"][0]{
     title,
     content,
     "imageUrl": image.asset->url,
     "imageWidth": image.asset->metadata.dimensions.width,
-    "imageHeight": image.asset->metadata.dimensions.height, 'alt' : image.alt,
+    "imageHeight": image.asset->metadata.dimensions.height, 
+    'alt' : image.alt,
     socialLinks[]{
       platform,
       url
@@ -21,7 +29,12 @@ const { data: aboutMe } = await loadQuery({
 });
 ---
 
-<Layout>
+<Layout
+  title={seoTitle}
+  description={seoDescription}
+  image={seoImage}
+  canonicalUrl={Astro.url.href}
+>
   <main
     class="p-4 my-4 flex flex-col mx-auto lg:flex-row items-center leading-relaxed gap-4 text-white"
   >

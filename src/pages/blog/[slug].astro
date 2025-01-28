@@ -5,8 +5,9 @@ import PortableText from "./../../components/PortableText.astro";
 import Layout from "./../../layouts/Layout.astro";
 import PortableTextImage from "../../components/PortableTextImage.astro";
 import SharePost from "../../components/SharePost.astro";
+import { urlForImage } from "../../sanity/lib/urlForImage";
 
-// Obtener todas las rutas de posts estáticas
+// Static Paths
 export async function getStaticPaths() {
   const { data: posts } = await loadQuery({
     query: `*[_type == "post"] {
@@ -22,9 +23,8 @@ export async function getStaticPaths() {
   }));
 }
 
-const { params, props } = Astro;
-
-// Obtener datos completos del post actual
+// Primero cargar los datos del post
+const { params } = Astro;
 const { data: post } = await loadQuery({
   query: `*[_type == "post" && slug.current == $slug][0]{
     title,
@@ -41,15 +41,32 @@ const { data: post } = await loadQuery({
   params,
 });
 
-// Formatear fecha
-const publishDate = new Date(post.publishedAt).toLocaleDateString("es-ES", {
+// Ahora configurar SEO con el post ya cargado
+const postDescription =
+  post.description ||
+  post.body
+    .find((b) => b._type === "block")
+    ?.children[0]?.text.substring(0, 160) + "..." ||
+  "In-depth analysis and tutorial on digital art techniques and creative workflows";
+
+// Date Formatting
+const publishDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
 });
 ---
 
-<Layout title={`Yuly Blog | ${post.title}`}>
+<Layout
+  title={`${post.title} | Yuly VP`}
+  description={postDescription}
+  image={urlForImage(post.mainImage.asset)
+    .width(1200)
+    .height(630)
+    .format("webp")
+    .url()}
+  canonicalUrl={Astro.url.href}
+>
   <article class="min-h-screen bg-fuchsia-950">
     {/* Botón flotante mejorado */}
     <a
@@ -116,7 +133,7 @@ const publishDate = new Date(post.publishedAt).toLocaleDateString("es-ES", {
               {publishDate}
             </time>
           </div>
-          <SharePost title={post.title}/>
+          <SharePost title={post.title} />
         </header>
 
         {/* Contenido del post */}

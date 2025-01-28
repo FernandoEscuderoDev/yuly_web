@@ -6,6 +6,13 @@ import PostSection from "../../components/PostSection";
 import { loadQuery } from "../../sanity/lib/load-query";
 import Layout from "./../../layouts/Layout.astro";
 
+// SEO Configuration
+const seoTitle = "Yuly Vp | Blog Digital Painting Tutorials & Creative Insights";
+const seoDescription =
+  "Educational articles and behind-the-scenes guides on digital art techniques, character design workflows, and traditional drawing methods.";
+const seoImage = "/social-blog.webp";
+
+// Data Query
 const POSTS_QUERY = `*[ 
   _type == "post" 
   && defined(slug.current)
@@ -24,8 +31,13 @@ const POSTS_QUERY = `*[
 const { data: posts } = await loadQuery({ query: POSTS_QUERY, params: {} });
 ---
 
-<Layout title="Blog">
-    <BackgroundBlog />
+<Layout
+  title={seoTitle}
+  description={seoDescription}
+  image={seoImage}
+  canonicalUrl={Astro.url.href}
+>
+  <BackgroundBlog />
   <div>
     <PostSection client:load />
     <PostGrid posts={posts} client:load />

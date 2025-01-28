@@ -1,8 +1,19 @@
 ---
 export const prerender = false;
-import Layout from '../layouts/Layout.astro'
-import SketchGallery from '../components/sketchGallery.jsx'
+import Layout from '../layouts/Layout.astro';
+import SketchGallery from '../components/sketchGallery.jsx';
+
+// SEO Configuration
+const seoTitle = "Yuly VP | Sketches Collection";
+const seoDescription = "Explore pencil sketches and traditional drawing techniques. Behind-the-scenes look at the artistic process from initial concepts to finished works.";
+const seoImage = "/social-sketch.webp";
 ---
-<Layout>
+
+<Layout 
+  title={seoTitle} 
+  description={seoDescription} 
+  image={seoImage}
+  canonicalUrl={Astro.url.href}
+>
   <SketchGallery client:load/>
 </Layout>

@@ -2,27 +2,92 @@
 import { ViewTransitions } from "astro:transitions";
 import Footer from "../components/Footer.astro";
 import Navbar from "../components/Navbar.astro";
-const { title = "YulyVP" } = Astro.props;
+
+// Valores por defecto para SEO
+const {
+  title = "Yuly VP | Digital & Traditional Artist Portfolio",
+  description = "Official portfolio of Yuly VP showcasing digital paintings, traditional sketches, and character design artwork. Explore original creations and commission options.",
+  image,
+  canonicalUrl = Astro.url.href,
+} = Astro.props;
+
+// Generar URL absoluta para la imagen
+const fullImageUrl = image.startsWith("http")
+  ? image
+  : `${Astro.url.origin}${image}`;
 ---
 
 <!doctype html>
 <html
   lang="en"
+  dir="ltr"
   class="font-rasputin scrollbar-thin scrollbar-track-fuchsia-950 scrollbar-thumb-fuchsia-700"
 >
   <head>
+    <!-- Metadatos básicos -->
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
-    <ViewTransitions />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1"
     />
+    <meta name="color-scheme" content="dark" />
     <link rel="icon" type="image/png" href="/icono.png" />
-    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
     <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content="Yuly VP" />
+    <meta name="copyright" content="© Yuly VP" />
+    <meta name="robots" content="index, follow" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="general" />
+    <meta name="geo.region" content="ES" />
+    <meta name="geo.placename" content="Spain" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullImageUrl} />
+    <meta property="og:site_name" content="Yuly VP Art Portfolio" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullImageUrl} />
+    <meta name="twitter:site" content="@yulyvp" />
+    <meta name="twitter:creator" content="@yulyvp" />
+
+    <!-- Apple/Safari -->
+    <meta name="apple-mobile-web-app-title" content="Yuly VP" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+
+    <!-- Preconexiones -->
+    <link rel="preconnect" href="https://twitter.com" crossorigin />
+    <link rel="preconnect" href="https://www.facebook.com" crossorigin />
+    <link rel="preconnect" href="https://www.instagram.com" crossorigin />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0D000A" />
+
+    <ViewTransitions />
+    <meta name="generator" content={Astro.generator} />
   </head>
-  <body class="grid min-h-screen text-fuchsia-500 bg-[#0D000A] selection:bg-fuchsia-700">
+
+  <body
+    class="grid min-h-screen text-fuchsia-500 bg-[#0D000A] selection:bg-fuchsia-700"
+  >
     <div
       class="fixed inset-0 -z-20 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#330029_100%)]"
     >
@@ -32,6 +97,7 @@ const { title = "YulyVP" } = Astro.props;
     <Footer />
   </body>
 </html>
+
 <style is:global>
   html {
     scrollbar-gutter: stable;
@@ -42,8 +108,8 @@ const { title = "YulyVP" } = Astro.props;
   img {
     user-select: none;
   }
-  /*Blog Style*/
 
+  /* Blog Style */
   #textAbout ul {
     list-style: disc;
     list-style-position: inside;
@@ -52,15 +118,15 @@ const { title = "YulyVP" } = Astro.props;
     list-style: decimal;
     list-style-position: inside;
   }
-  #textAbout a{
+  #textAbout a {
     color: fuchsia;
-    background-color: rgba(255, 0, 255, 0.20);
+    background-color: rgba(255, 0, 255, 0.2);
     text-decoration: underline;
   }
-  #textAbout a:hover{
+  #textAbout a:hover {
     color: rgb(248, 113, 248);
   }
-  #textAbout a:visited{
+  #textAbout a:visited {
     color: white;
   }
   span[style] {
@@ -68,16 +134,16 @@ const { title = "YulyVP" } = Astro.props;
   }
   code {
     background-color: #1e1e2f;
-    width: 100%; /* Fondo oscuro */
-    color: #c3e88d; /* Texto verde claro */
-    font-family: monospace; /* Fuente monoespaciada elegante */
-    font-size: 14px; /* Tamaño de fuente */
-    padding: 6px 10px; /* Espaciado interno */
-    border-radius: 6px; /* Bordes redondeados */
-    display: inline-block; /* Mantener el contenido alineado */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra más definida */
-    border: 1px solid #3a3f5c; /* Borde sutil */
-    white-space: pre-wrap; /* Para manejar saltos de línea */
+    width: 100%;
+    color: #c3e88d;
+    font-family: monospace;
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border: 1px solid #3a3f5c;
+    white-space: pre-wrap;
   }
   del {
     text-decoration-color: fuchsia !important;
@@ -91,15 +157,15 @@ const { title = "YulyVP" } = Astro.props;
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
     background-image: linear-gradient(to right, var(--tw-gradient-stops));
   }
-
-  strong::selection{
+  strong::selection {
     color: #f8f8f2;
     background-clip: none;
   }
-  em::selection{
+  em::selection {
     color: white;
   }
-  /*Blog Style*/
+
+  /* Gallery Style */
   .pswp__dynamic-caption {
     color: #fff;
     width: 100%;
@@ -117,6 +183,7 @@ const { title = "YulyVP" } = Astro.props;
     background: rgba(0, 0, 0, 0.5);
     padding: 10px 15px;
   }
+
   @font-face {
     font-family: "Rasputin";
     src: url("/fonts/RasputinRegular.woff") format("woff");

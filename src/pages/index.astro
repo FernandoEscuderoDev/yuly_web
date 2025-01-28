@@ -3,15 +3,31 @@ export const prerender = false;
 import Layout from "../layouts/Layout.astro";
 import { loadQuery } from "../sanity/lib/load-query";
 import { urlForImage } from "./../sanity/lib/urlForImage";
+
+// SEO Configuration
+const seoTitle = "Yuly VP | Digital Painting & Character Design Portfolio";
+const seoDescription =
+  "Professional artist portfolio featuring digital illustrations, traditional sketches, and character designs. Commission original artwork and explore creative techniques.";
+const seoImage = "/social-home.jpg";
+
+// Cargar imagen de fondo
 const { data: posts } = await loadQuery({
-  query: `*[_type == 'sanity.imageAsset' && (title == "backgroundImage")]{url,
-  "imageWidth": metadata.dimensions.width,
-  "imageHeight": metadata.dimensions.height, 'alt' : alt}`,
+  query: `*[_type == 'sanity.imageAsset' && title == "backgroundImage"]{
+    url,
+    "imageWidth": metadata.dimensions.width,
+    "imageHeight": metadata.dimensions.height,
+    'alt' : alt
+  }`,
   params: {},
 });
 ---
 
-<Layout>
+<Layout
+  title={seoTitle}
+  description={seoDescription}
+  image={seoImage}
+  canonicalUrl={Astro.url.href}
+>
   <div
     class={`bg-cover bg-no-repeat bg-center w-full h-svh`}
     style=`background-image: url(${urlForImage(posts[0].url).width(1920).height(960).quality(80).format("webp").url()});`

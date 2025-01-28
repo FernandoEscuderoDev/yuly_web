@@ -1,8 +1,19 @@
 ---
 export const prerender = false;
-import Layout from '../layouts/Layout.astro'
-import GalleryMasonry from '../components/GalleryMasonry.jsx'
+import Layout from '../layouts/Layout.astro';
+import GalleryMasonry from '../components/GalleryMasonry.jsx';
+
+// SEO Configuration
+const seoTitle = "Yuly VP | Portfolio Collection";
+const seoDescription = "Collection of digital artwork and character designs. Explore high-resolution illustrations and professional concept art portfolio.";
+const seoImage = "/social-gallery.webp";
 ---
-<Layout>
+
+<Layout 
+  title={seoTitle} 
+  description={seoDescription} 
+  image={seoImage}
+  canonicalUrl={Astro.url.href}
+>
   <GalleryMasonry client:load/>
 </Layout>
