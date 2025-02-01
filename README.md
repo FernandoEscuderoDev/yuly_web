@@ -7,7 +7,7 @@
 ![Desktop](./img-readme/img5.png)
 ![Desktop](./img-readme/img6.png)
 
-## My process
+## My process Dev
 
 ### Built with
 
@@ -16,4 +16,6 @@
 - Sanity
 - Tailwind
 - Mobile-first
-- 
+- Netlify
+- Photoswipe
+- Swiper
